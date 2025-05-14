@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FunDrone - FPV 및 교육용 드론 정보 포털</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>FunDrone</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">홈</a></li>
+                    <li><a href="pages/board/documents.html">드론 문서</a></li>
+                    <li><a href="pages/board/qna.html">Q&A</a></li>
+                    <li><a href="pages/gallery/footage.html">드론 영상/사진</a></li>
+                    <li><a href="pages/promotion/about.html">소개</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h2>FPV 및 교육용 드론의 세계에 오신 것을 환영합니다</h2>
+            <p>드론 조립, 조종 방법 및 기본 원리에 대한 모든 정보를 찾아보세요</p>
+            <a href="#learn-more" class="btn">자세히 알아보기</a>
+        </div>
+    </section>
+
+    <section class="weather-info">
+        <div class="container">
+            <h2>오늘의 날씨 정보</h2>
+            <div id="weather-data">
+                <div class="weather-card">
+                    <div class="weather-icon">
+                        <i class="fas fa-cloud-sun"></i>
+                    </div>
+                    <div class="weather-details">
+                        <h3>현재 날씨</h3>
+                        <p id="current-temp">로딩 중...</p>
+                        <p id="current-conditions">로딩 중...</p>
+                        <p id="wind-speed">풍속: 로딩 중...</p>
+                    </div>
+                </div>
+                <div class="weather-message">
+                    <p id="flight-recommendation">날씨 정보를 확인하는 중입니다...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="learn-more" class="drone-types">
+        <div class="container">
+            <h2>드론의 종류</h2>
+            <div class="drone-cards">
+                <div class="drone-card">
+                    <img src="images/fpv-drone.jpg" alt="FPV 드론">
+                    <h3>FPV 드론</h3>
+                    <p>1인칭 시점으로 비행을 즐기는 FPV 드론의 세계를 경험해보세요. 고속 비행과 역동적인 움직임이 특징입니다.</p>
+                    <a href="pages/board/documents.html#fpv" class="btn">자세히 보기</a>
+                </div>
+                <div class="drone-card">
+                    <img src="images/education-drone.jpg" alt="교육용 드론">
+                    <h3>교육용 드론</h3>
+                    <p>코딩과 과학 원리를 배울 수 있는 교육용 드론. 초보자도 쉽게 시작할 수 있습니다.</p>
+                    <a href="pages/board/documents.html#educational" class="btn">자세히 보기</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="featured-content">
+        <div class="container">
+            <h2>추천 콘텐츠</h2>
+            <div class="content-grid">
+                <div class="content-item">
+                    <img src="images/assembly-guide.jpg" alt="드론 조립 가이드">
+                    <h3>드론 조립 가이드</h3>
+                    <p>처음부터 드론을 조립하는 방법을 단계별로 알아봅니다.</p>
+                    <a href="pages/board/documents.html#assembly" class="btn">읽어보기</a>
+                </div>
+                <div class="content-item">
+                    <img src="images/flight-techniques.jpg" alt="비행 테크닉">
+                    <h3>비행 테크닉</h3>
+                    <p>드론 조종 기술을 향상시키는 팁과 트릭을 배워보세요.</p>
+                    <a href="pages/board/documents.html#flight" class="btn">읽어보기</a>
+                </div>
+                <div class="content-item">
+                    <img src="images/drone-footage.jpg" alt="최신 드론 영상">
+                    <h3>최신 드론 영상</h3>
+                    <p>커뮤니티에서 공유된 멋진 드론 영상을 감상하세요.</p>
+                    <a href="pages/gallery/footage.html" class="btn">보러가기</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>FunDrone</h3>
+                    <p>FPV 및 교육용 드론에 관한 모든 정보를 제공합니다.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>링크</h3>
+                    <ul>
+                        <li><a href="index.html">홈</a></li>
+                        <li><a href="pages/board/documents.html">드론 문서</a></li>
+                        <li><a href="pages/board/qna.html">Q&A</a></li>
+                        <li><a href="pages/gallery/footage.html">드론 영상/사진</a></li>
+                        <li><a href="pages/promotion/about.html">소개</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>소셜 미디어</h3>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 FunDrone. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/weather.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html> 

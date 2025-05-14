@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>드론 문서 게시판 - FunDrone</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/board.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1><a href="../../index.html">FunDrone</a></h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="../../index.html">홈</a></li>
+                    <li><a href="./documents.html" class="active">드론 문서</a></li>
+                    <li><a href="./qna.html">Q&A</a></li>
+                    <li><a href="../gallery/footage.html">드론 영상/사진</a></li>
+                    <li><a href="../promotion/about.html">소개</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="page-header">
+        <div class="container">
+            <h1>드론 문서 게시판</h1>
+            <p>드론 관련 문서와 자료를 업로드하고 공유하는 공간입니다</p>
+        </div>
+    </section>
+
+    <section class="board-content">
+        <div class="container">
+            <div class="board-filter">
+                <div class="search-bar">
+                    <input type="text" placeholder="문서 검색">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+                <div class="filter-options">
+                    <select>
+                        <option value="all">모든 카테고리</option>
+                        <option value="fpv">FPV 드론</option>
+                        <option value="educational">교육용 드론</option>
+                        <option value="assembly">조립 가이드</option>
+                        <option value="flight">비행 테크닉</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="board-list">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>번호</th>
+                            <th>카테고리</th>
+                            <th>제목</th>
+                            <th>작성자</th>
+                            <th>작성일</th>
+                            <th>조회수</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="fpv">
+                            <td>5</td>
+                            <td><span class="category fpv">FPV 드론</span></td>
+                            <td><a href="#post-modal" class="open-modal">FPV 드론 기본 원리와 동작 방식</a></td>
+                            <td>드론마스터</td>
+                            <td>2023-07-15</td>
+                            <td>305</td>
+                        </tr>
+                        <tr id="educational">
+                            <td>4</td>
+                            <td><span class="category educational">교육용 드론</span></td>
+                            <td><a href="#post-modal" class="open-modal">초보자를 위한 교육용 드론 설명서</a></td>
+                            <td>드론교육자</td>
+                            <td>2023-07-10</td>
+                            <td>288</td>
+                        </tr>
+                        <tr id="assembly">
+                            <td>3</td>
+                            <td><span class="category assembly">조립 가이드</span></td>
+                            <td><a href="#post-modal" class="open-modal">FPV 드론 조립 단계별 가이드</a></td>
+                            <td>DIY드론</td>
+                            <td>2023-07-05</td>
+                            <td>412</td>
+                        </tr>
+                        <tr id="flight">
+                            <td>2</td>
+                            <td><span class="category flight">비행 테크닉</span></td>
+                            <td><a href="#post-modal" class="open-modal">드론 조종 초급에서 고급까지</a></td>
+                            <td>드론파일럿</td>
+                            <td>2023-07-01</td>
+                            <td>356</td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td><span class="category fpv">FPV 드론</span></td>
+                            <td><a href="#post-modal" class="open-modal">FPV 드론 부품 선택 가이드</a></td>
+                            <td>부품마스터</td>
+                            <td>2023-06-25</td>
+                            <td>298</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="board-pagination">
+                <a href="#" class="active">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">4</a>
+                <a href="#">5</a>
+                <a href="#" class="next"><i class="fas fa-chevron-right"></i></a>
+            </div>
+
+            <div class="board-buttons">
+                <a href="#upload-modal" class="btn open-modal">문서 업로드</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 게시물 모달 -->
+    <div id="post-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="post-header">
+                <h2>FPV 드론 기본 원리와 동작 방식</h2>
+                <div class="post-info">
+                    <span><i class="fas fa-user"></i> 드론마스터</span>
+                    <span><i class="fas fa-calendar"></i> 2023-07-15</span>
+                    <span><i class="fas fa-eye"></i> 305</span>
+                </div>
+            </div>
+            <div class="post-content">
+                <h3>FPV 드론이란?</h3>
+                <p>FPV(First Person View) 드론은 조종자가 드론에 장착된 카메라를 통해 1인칭 시점으로 비행을 경험할 수 있는 무인 항공기입니다. 고글이나 모니터를 통해 실시간으로 드론이 촬영하는 영상을 보면서 조종하는 방식으로, 마치 자신이 드론에 탑승해 날아다니는 듯한 경험을 제공합니다.</p>
+                
+                <h3>기본 원리</h3>
+                <p>FPV 드론은 크게 프레임, 모터, 프로펠러, 비행 제어 시스템, 배터리, 카메라 및 영상 전송 시스템으로 구성됩니다.</p>
+                
+                <ul>
+                    <li><strong>프레임:</strong> 드론의 뼈대 역할을 하며, 모든 부품을 지지합니다.</li>
+                    <li><strong>모터 & 프로펠러:</strong> 일반적으로 4개(쿼드콥터)의 모터와 프로펠러가 있으며, 각 모터의 속도를 조절하여 드론의 움직임을 제어합니다.</li>
+                    <li><strong>비행 제어 시스템:</strong> 자이로스코프와 가속도계를 포함하여 드론의 자세와 움직임을 감지하고 안정화시킵니다.</li>
+                    <li><strong>배터리:</strong> 대부분 리튬 폴리머(LiPo) 배터리를 사용하며, 비행 시간을 결정합니다.</li>
+                    <li><strong>FPV 시스템:</strong> 카메라와 영상 전송 장치(VTX)로 구성되며, 실시간 영상을 조종자에게 전송합니다.</li>
+                </ul>
+                
+                <h3>조종 방법</h3>
+                <p>FPV 드론 조종은 일반적으로 다음 4가지 채널을 통해 이루어집니다:</p>
+                
+                <ul>
+                    <li><strong>스로틀(Throttle):</strong> 상승 및 하강 제어</li>
+                    <li><strong>요(Yaw):</strong> 좌우 회전 제어</li>
+                    <li><strong>피치(Pitch):</strong> 전진 및 후진 제어</li>
+                    <li><strong>롤(Roll):</strong> 좌우 이동 제어</li>
+                </ul>
+                
+                <p>초보자는 먼저 시뮬레이터를 통해 연습하는 것이 좋습니다. 실제 비행 전에 안전 수칙을 숙지하고, 비행 규정을 준수하세요.</p>
+
+                <div class="post-files">
+                    <h4>첨부 파일</h4>
+                    <ul>
+                        <li><a href="#"><i class="fas fa-file-pdf"></i> FPV_드론_기초_가이드.pdf (2.5MB)</a></li>
+                        <li><a href="#"><i class="fas fa-file-image"></i> 드론_부품_다이어그램.jpg (1.2MB)</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="post-footer">
+                <div class="post-actions">
+                    <button><i class="fas fa-thumbs-up"></i> 좋아요</button>
+                    <button><i class="fas fa-share-alt"></i> 공유하기</button>
+                    <button><i class="fas fa-download"></i> 다운로드</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 업로드 모달 -->
+    <div id="upload-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>문서 업로드</h2>
+            <form class="upload-form">
+                <div class="form-group">
+                    <label for="title">제목</label>
+                    <input type="text" id="title" required>
+                </div>
+                <div class="form-group">
+                    <label for="category">카테고리</label>
+                    <select id="category" required>
+                        <option value="">카테고리 선택</option>
+                        <option value="fpv">FPV 드론</option>
+                        <option value="educational">교육용 드론</option>
+                        <option value="assembly">조립 가이드</option>
+                        <option value="flight">비행 테크닉</option>
+                        <option value="other">기타</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="content">내용</label>
+                    <textarea id="content" rows="10" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="file">파일 첨부</label>
+                    <input type="file" id="file" multiple>
+                    <small>최대 5개 파일, 각 파일 10MB 이하</small>
+                </div>
+                <div class="form-buttons">
+                    <button type="submit" class="btn">업로드</button>
+                    <button type="button" class="btn btn-cancel close-modal">취소</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>FunDrone</h3>
+                    <p>FPV 및 교육용 드론에 관한 모든 정보를 제공합니다.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>링크</h3>
+                    <ul>
+                        <li><a href="../../index.html">홈</a></li>
+                        <li><a href="./documents.html">드론 문서</a></li>
+                        <li><a href="./qna.html">Q&A</a></li>
+                        <li><a href="../gallery/footage.html">드론 영상/사진</a></li>
+                        <li><a href="../promotion/about.html">소개</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>소셜 미디어</h3>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 FunDrone. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../../js/main.js"></script>
+    <script src="../../js/board.js"></script>
+</body>
+</html> 
