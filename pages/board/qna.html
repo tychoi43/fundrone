@@ -144,6 +144,15 @@
                 <p>또한, 배터리 관리와 유지보수에 대한 팁도 있으면 알려주세요. 감사합니다!</p>
             </div>
             
+            <div class="post-footer">
+                <div class="post-actions">
+                    <button><i class="fas fa-thumbs-up"></i> 좋아요</button>
+                    <button><i class="fas fa-share-alt"></i> 공유하기</button>
+                    <button class="edit-post-btn"><i class="fas fa-edit"></i> 수정</button>
+                    <button class="delete-post-btn"><i class="fas fa-trash-alt"></i> 삭제</button>
+                </div>
+            </div>
+            
             <div class="answers-section">
                 <h3>답변 (3)</h3>
                 
@@ -280,7 +289,7 @@
         </div>
     </div>
 
-    <!-- 답변 폼 업데이트 -->
+    <!-- 답변 폼 템플릿 -->
     <script id="answer-form-template" type="text/template">
         <div class="answer-form">
             <h4>답변 작성하기</h4>
@@ -292,6 +301,70 @@
             </form>
         </div>
     </script>
+    
+    <!-- 게시물 수정 모달 -->
+    <div id="edit-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>질문 수정</h2>
+            <form class="edit-form" enctype="multipart/form-data">
+                <input type="hidden" id="edit-post-id" name="edit-post-id">
+                <div class="form-group">
+                    <label for="edit-title">제목</label>
+                    <input type="text" id="edit-title" name="edit-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-category">카테고리</label>
+                    <select id="edit-category" name="edit-category" required>
+                        <option value="">카테고리 선택</option>
+                        <option value="fpv">FPV 드론</option>
+                        <option value="educational">교육용 드론</option>
+                        <option value="assembly">조립 문제</option>
+                        <option value="flight">비행 문제</option>
+                        <option value="other">기타</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="edit-content">내용</label>
+                    <textarea id="edit-content" name="edit-content" rows="10" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="edit-file">파일 첨부</label>
+                    <input type="file" id="edit-file" name="edit-file" multiple>
+                    <small>이미지나 관련 파일을 첨부하면 보다 정확한 답변을 받을 수 있습니다.</small>
+                </div>
+                <div class="form-group">
+                    <div class="current-files">
+                        <h4>현재 첨부 파일</h4>
+                        <div class="edit-files-list">
+                            <!-- 기존 파일 목록이 여기에 표시됩니다 -->
+                        </div>
+                    </div>
+                </div>
+                <div class="form-buttons">
+                    <button type="submit" class="btn">수정 완료</button>
+                    <button type="button" class="btn btn-cancel close-modal">취소</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 게시물 삭제 확인 모달 -->
+    <div id="delete-confirm-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>질문 삭제</h2>
+            <div class="delete-confirm-content">
+                <p>정말 이 질문을 삭제하시겠습니까?</p>
+                <p>삭제된 질문은 복구할 수 없으며, 연결된 모든 답변도 함께 삭제됩니다.</p>
+                <input type="hidden" id="delete-post-id">
+                <div class="form-buttons">
+                    <button type="button" class="btn delete-confirm-btn">삭제</button>
+                    <button type="button" class="btn btn-cancel close-modal">취소</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <footer>
         <div class="container">

@@ -4,6 +4,9 @@ document.addEventListener('DOMContentLoaded', function() {
         window.postData = {};
     }
     
+    // Keep track of the currently opened post
+    let currentPostId = null;
+    
     // Pre-load existing posts data
     initializeExistingPostsData();
     
@@ -21,6 +24,9 @@ document.addEventListener('DOMContentLoaded', function() {
             const postId = this.getAttribute('data-post-id');
             
             if (modal) {
+                // Store the current post ID when opening a post
+                currentPostId = postId;
+                
                 // Check if it's a post with stored data
                 if (postId && window.postData && window.postData[postId]) {
                     const postData = window.postData[postId];
@@ -206,6 +212,10 @@ document.addEventListener('DOMContentLoaded', function() {
             if (modal) {
                 modal.style.display = 'none';
                 document.body.style.overflow = ''; // Re-enable scrolling
+                // Reset current post ID when closing the modal
+                if (modal.id === 'post-modal') {
+                    currentPostId = null;
+                }
             }
         });
     });
@@ -216,6 +226,10 @@ document.addEventListener('DOMContentLoaded', function() {
             if (e.target === this) {
                 this.style.display = 'none';
                 document.body.style.overflow = '';
+                // Reset current post ID when closing the modal
+                if (this.id === 'post-modal') {
+                    currentPostId = null;
+                }
             }
         });
     });
@@ -227,6 +241,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (modal.style.display === 'block') {
                     modal.style.display = 'none';
                     document.body.style.overflow = '';
+                    // Reset current post ID when closing the post modal
+                    if (modal.id === 'post-modal') {
+                        currentPostId = null;
+                    }
                 }
             });
         }
@@ -603,6 +621,7 @@ document.addEventListener('DOMContentLoaded', function() {
             author: '현재 사용자',
             date: today,
             content: processedContent,
+            rawContent: processedContent, // Store raw content for editing
             views: 0
         };
         
@@ -621,6 +640,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     const postData = window.postData[postId];
                     console.log("Opening new post with data:", postData);
                     
+                    // Set current post ID
+                    currentPostId = postId;
+                    
                     // Use the helper function to update modal content
                     updateModalContent(modal, postData);
                     
@@ -634,8 +656,181 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
         
+        // Add event handlers for edit and delete buttons
+        setupNewPostActionButtons();
+        
         // Update pagination to show the first page with the new post
         updatePagination();
+    }
+    
+    // Function to setup action buttons for newly created posts
+    function setupNewPostActionButtons() {
+        const editButtons = document.querySelectorAll('.edit-post-btn');
+        const deleteButtons = document.querySelectorAll('.delete-post-btn');
+        
+        // Setup edit button handler for the most recently added button
+        if (editButtons.length > 0) {
+            const lastEditButton = editButtons[editButtons.length - 1];
+            if (!lastEditButton.hasEventListener) {
+                lastEditButton.addEventListener('click', handleEditButtonClick);
+                lastEditButton.hasEventListener = true;
+            }
+        }
+        
+        // Setup delete button handler for the most recently added button
+        if (deleteButtons.length > 0) {
+            const lastDeleteButton = deleteButtons[deleteButtons.length - 1];
+            if (!lastDeleteButton.hasEventListener) {
+                lastDeleteButton.addEventListener('click', handleDeleteButtonClick);
+                lastDeleteButton.hasEventListener = true;
+            }
+        }
+    }
+    
+    // Setup edit button handlers
+    const editPostButtons = document.querySelectorAll('.edit-post-btn');
+    editPostButtons.forEach(button => {
+        if (!button.hasEventListener) {
+            button.addEventListener('click', handleEditButtonClick);
+            button.hasEventListener = true;
+        }
+    });
+    
+    // Setup delete button handlers
+    const deletePostButtons = document.querySelectorAll('.delete-post-btn');
+    deletePostButtons.forEach(button => {
+        if (!button.hasEventListener) {
+            button.addEventListener('click', handleDeleteButtonClick);
+            button.hasEventListener = true;
+        }
+    });
+    
+    // Handler function for edit button click
+    function handleEditButtonClick() {
+        // Check if user is logged in (simulated)
+        const isLoggedIn = true; // In a real app, check user authentication status
+        
+        if (!isLoggedIn) {
+            alert('게시물 수정하려면 로그인이 필요합니다.');
+            return;
+        }
+        
+        // Check if a post is currently open
+        if (!currentPostId) {
+            console.error('No post is currently open');
+            return;
+        }
+        
+        // Get the post data
+        const postData = window.postData[currentPostId];
+        if (!postData) {
+            console.error('No data found for post ID:', currentPostId);
+            return;
+        }
+        
+        // Check if the current user is the author (simulated)
+        const isAuthor = true; // In a real app, check if the current user is the author
+        if (!isAuthor) {
+            alert('자신이 작성한 게시물만 수정할 수 있습니다.');
+            return;
+        }
+        
+        // Open the edit modal
+        const editModal = document.getElementById('edit-modal');
+        if (!editModal) {
+            console.error('Edit modal not found');
+            return;
+        }
+        
+        // Fill the form with post data
+        document.getElementById('edit-post-id').value = currentPostId;
+        document.getElementById('edit-title').value = postData.title || '';
+        
+        // Set the category dropdown
+        const categorySelect = document.getElementById('edit-category');
+        if (categorySelect) {
+            const categoryValue = postData.categoryClass || '';
+            for (let i = 0; i < categorySelect.options.length; i++) {
+                if (categorySelect.options[i].value === categoryValue) {
+                    categorySelect.selectedIndex = i;
+                    break;
+                }
+            }
+        }
+        
+        // Set the content - prefer rawContent if available
+        document.getElementById('edit-content').value = postData.rawContent || postData.content || '';
+        
+        // Show existing files if any
+        const filesListContainer = editModal.querySelector('.edit-files-list');
+        if (filesListContainer && postData.files && postData.files.length > 0) {
+            filesListContainer.innerHTML = '';
+            postData.files.forEach(file => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `
+                    <span><i class="fas fa-file"></i> ${file.name}</span>
+                    <button type="button" class="remove-file-btn" data-file-id="${file.id}">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                filesListContainer.appendChild(fileItem);
+            });
+        } else if (filesListContainer) {
+            filesListContainer.innerHTML = '<p>첨부된 파일이 없습니다.</p>';
+        }
+        
+        // Display the edit modal
+        editModal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+        
+        // Close the post modal
+        const postModal = document.getElementById('post-modal');
+        if (postModal) {
+            postModal.style.display = 'none';
+        }
+    }
+    
+    // Handler function for delete button click
+    function handleDeleteButtonClick() {
+        // Check if user is logged in (simulated)
+        const isLoggedIn = true; // In a real app, check user authentication status
+        
+        if (!isLoggedIn) {
+            alert('게시물을 삭제하려면 로그인이 필요합니다.');
+            return;
+        }
+        
+        if (!currentPostId) {
+            console.error('No post is currently open');
+            return;
+        }
+        
+        // Check if the current user is the author (simulated)
+        const isAuthor = true; // In a real app, check if the current user is the author
+        if (!isAuthor) {
+            alert('자신이 작성한 게시물만 삭제할 수 있습니다.');
+            return;
+        }
+        
+        // Set the post ID in the delete confirmation modal
+        const deletePostIdInput = document.getElementById('delete-post-id');
+        if (deletePostIdInput) {
+            deletePostIdInput.value = currentPostId;
+        }
+        
+        // Open the delete confirmation modal
+        const deleteModal = document.getElementById('delete-confirm-modal');
+        if (deleteModal) {
+            deleteModal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Hide the post modal
+        const postModal = document.getElementById('post-modal');
+        if (postModal) {
+            postModal.style.display = 'none';
+        }
     }
     
     // Helper function to get category text
@@ -727,4 +922,104 @@ document.addEventListener('DOMContentLoaded', function() {
             countEl.textContent = ' ' + (count + 1);
         });
     });
+
+    // Handle edit form submission
+    const editForm = document.querySelector('.edit-form');
+    if (editForm) {
+        editForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const postId = document.getElementById('edit-post-id').value;
+            if (!postId || !window.postData[postId]) {
+                console.error('Invalid post ID or post data not found');
+                return;
+            }
+            
+            // Get form data
+            const title = document.getElementById('edit-title').value;
+            const categoryValue = document.getElementById('edit-category').value;
+            const content = document.getElementById('edit-content').value;
+            
+            // Get the category text
+            const categoryText = getCategoryText(categoryValue);
+            
+            // Update the post data
+            window.postData[postId].title = title;
+            window.postData[postId].category = categoryText;
+            window.postData[postId].categoryClass = categoryValue;
+            window.postData[postId].content = content;
+            window.postData[postId].rawContent = content; // Store raw content for editing
+            
+            // Update the row in the table
+            const postRow = document.getElementById(postId);
+            if (postRow) {
+                const titleCell = postRow.querySelector('td:nth-child(3) a');
+                if (titleCell) titleCell.textContent = title;
+                
+                const categoryCell = postRow.querySelector('td:nth-child(2) span');
+                if (categoryCell) {
+                    // Remove old category classes and add the new one
+                    categoryCell.className = 'category ' + categoryValue;
+                    categoryCell.textContent = categoryText;
+                }
+            }
+            
+            // Show success message
+            alert('게시물이 성공적으로 수정되었습니다.');
+            
+            // Close the edit modal
+            const editModal = document.getElementById('edit-modal');
+            if (editModal) {
+                editModal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+            
+            // Reopen the post modal with updated content
+            const postModal = document.getElementById('post-modal');
+            if (postModal) {
+                updateModalContent(postModal, window.postData[postId]);
+                postModal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
+        });
+    }
+    
+    // Handle delete confirmation
+    const deleteConfirmBtn = document.querySelector('.delete-confirm-btn');
+    if (deleteConfirmBtn) {
+        deleteConfirmBtn.addEventListener('click', function() {
+            const postId = document.getElementById('delete-post-id').value;
+            if (!postId) {
+                console.error('No post ID specified for deletion');
+                return;
+            }
+            
+            // Remove the post from storage
+            if (window.postData && window.postData[postId]) {
+                delete window.postData[postId];
+            }
+            
+            // Remove the row from the table
+            const postRow = document.getElementById(postId);
+            if (postRow) {
+                postRow.remove();
+                
+                // Update pagination after removing a post
+                updatePagination();
+            }
+            
+            // Show success message
+            alert('게시물이 성공적으로 삭제되었습니다.');
+            
+            // Close the delete confirmation modal
+            const deleteModal = document.getElementById('delete-confirm-modal');
+            if (deleteModal) {
+                deleteModal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+            
+            // Reset current post ID
+            currentPostId = null;
+        });
+    }
 }); 

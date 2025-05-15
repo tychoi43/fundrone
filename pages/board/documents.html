@@ -176,6 +176,8 @@
                     <button><i class="fas fa-thumbs-up"></i> 좋아요</button>
                     <button><i class="fas fa-share-alt"></i> 공유하기</button>
                     <button><i class="fas fa-download"></i> 다운로드</button>
+                    <button class="edit-post-btn"><i class="fas fa-edit"></i> 수정</button>
+                    <button class="delete-post-btn"><i class="fas fa-trash-alt"></i> 삭제</button>
                 </div>
             </div>
         </div>
@@ -216,6 +218,70 @@
                     <button type="button" class="btn btn-cancel close-modal">취소</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- 게시물 수정 모달 -->
+    <div id="edit-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>게시물 수정</h2>
+            <form class="edit-form" enctype="multipart/form-data">
+                <input type="hidden" id="edit-post-id" name="edit-post-id">
+                <div class="form-group">
+                    <label for="edit-title">제목</label>
+                    <input type="text" id="edit-title" name="edit-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-category">카테고리</label>
+                    <select id="edit-category" name="edit-category" required>
+                        <option value="">카테고리 선택</option>
+                        <option value="fpv">FPV 드론</option>
+                        <option value="educational">교육용 드론</option>
+                        <option value="assembly">조립 가이드</option>
+                        <option value="flight">비행 테크닉</option>
+                        <option value="other">기타</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="edit-content">내용</label>
+                    <textarea id="edit-content" name="edit-content" rows="10" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="edit-file">파일 첨부</label>
+                    <input type="file" id="edit-file" name="edit-file" multiple>
+                    <small>최대 5개 파일, 각 파일 10MB 이하</small>
+                </div>
+                <div class="form-group">
+                    <div class="current-files">
+                        <h4>현재 첨부 파일</h4>
+                        <div class="edit-files-list">
+                            <!-- 기존 파일 목록이 여기에 표시됩니다 -->
+                        </div>
+                    </div>
+                </div>
+                <div class="form-buttons">
+                    <button type="submit" class="btn">수정 완료</button>
+                    <button type="button" class="btn btn-cancel close-modal">취소</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 게시물 삭제 확인 모달 -->
+    <div id="delete-confirm-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>게시물 삭제</h2>
+            <div class="delete-confirm-content">
+                <p>정말 이 게시물을 삭제하시겠습니까?</p>
+                <p>삭제된 게시물은 복구할 수 없습니다.</p>
+                <input type="hidden" id="delete-post-id">
+                <div class="form-buttons">
+                    <button type="button" class="btn delete-confirm-btn">삭제</button>
+                    <button type="button" class="btn btn-cancel close-modal">취소</button>
+                </div>
+            </div>
         </div>
     </div>
 

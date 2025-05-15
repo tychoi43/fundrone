@@ -461,6 +461,99 @@
     padding: 20px 0;
 }
 
+/* Edit and Delete Modal Styles */
+.edit-form {
+    padding: 20px 0;
+}
+
+.current-files {
+    margin-top: 15px;
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.file-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.file-item:last-child {
+    border-bottom: none;
+}
+
+.remove-file-btn {
+    background: none;
+    border: none;
+    color: #ff6b6b;
+    cursor: pointer;
+    font-size: 16px;
+    transition: color 0.3s;
+}
+
+.remove-file-btn:hover {
+    color: #ff0000;
+}
+
+.delete-confirm-content {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.delete-confirm-content p {
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.delete-confirm-content p:last-of-type {
+    color: #ff6b6b;
+    font-weight: bold;
+}
+
+.delete-confirm-btn {
+    background-color: #ff6b6b !important;
+    color: white !important;
+}
+
+.delete-confirm-btn:hover {
+    background-color: #ff5252 !important;
+}
+
+.edit-post-btn, .delete-post-btn {
+    margin-left: auto;
+}
+
+.edit-post-btn i {
+    color: #4dabf7;
+}
+
+.delete-post-btn i {
+    color: #ff6b6b;
+}
+
+/* Form Buttons Styling */
+.form-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.form-buttons button {
+    flex: 1;
+}
+
+.btn-cancel {
+    background-color: #e9ecef;
+    color: #495057;
+}
+
+.btn-cancel:hover {
+    background-color: #dee2e6;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .board-filter {
@@ -505,5 +598,24 @@
     
     .post-actions {
         justify-content: center;
+    }
+    
+    .edit-form .form-group {
+        margin-bottom: 15px;
+    }
+    
+    .post-actions {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .edit-post-btn, .delete-post-btn {
+        margin-left: 0;
+        margin-top: 10px;
+        flex-basis: 100%;
+    }
+    
+    .form-buttons {
+        flex-direction: column;
     }
 } 
