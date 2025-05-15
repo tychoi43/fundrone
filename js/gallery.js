@@ -107,24 +107,22 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Upload form dynamic content type behavior
-    const contentTypeSelect = document.getElementById('content-type');
+    // Upload method selection for videos
+    const uploadMethod = document.getElementById('upload-method');
+    const videoFileGroup = document.querySelector('.video-file-group');
     const videoUrlGroup = document.querySelector('.video-url-group');
-    const photoUploadGroup = document.querySelector('.photo-upload-group');
     
-    if (contentTypeSelect && videoUrlGroup && photoUploadGroup) {
-        contentTypeSelect.addEventListener('change', function() {
-            const selectedType = this.value;
-            
-            if (selectedType === 'video') {
+    if(uploadMethod) {
+        uploadMethod.addEventListener('change', function() {
+            if(this.value === 'file') {
+                videoFileGroup.style.display = 'block';
+                videoUrlGroup.style.display = 'none';
+            } else if(this.value === 'url') {
+                videoFileGroup.style.display = 'none';
                 videoUrlGroup.style.display = 'block';
-                photoUploadGroup.style.display = 'none';
-            } else if (selectedType === 'photo') {
-                videoUrlGroup.style.display = 'none';
-                photoUploadGroup.style.display = 'block';
             } else {
+                videoFileGroup.style.display = 'none';
                 videoUrlGroup.style.display = 'none';
-                photoUploadGroup.style.display = 'none';
             }
         });
     }
@@ -132,6 +130,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Image preview functionality
     const photoFileInput = document.getElementById('photo-file');
     const thumbnailInput = document.getElementById('thumbnail');
+    const videoFileInput = document.getElementById('video-file');
     
     function createImagePreview(input, previewContainerId) {
         input.addEventListener('change', function() {
@@ -181,7 +180,51 @@ document.addEventListener('DOMContentLoaded', function() {
         createImagePreview(thumbnailInput, 'thumbnail-preview');
     }
     
-    // Form submission handling
+    // Create video preview
+    if (videoFileInput) {
+        videoFileInput.addEventListener('change', function() {
+            // Check if file was selected
+            if (!this.files || !this.files[0]) return;
+            
+            const file = this.files[0];
+            
+            // Check if file is a video
+            if (!file.type.match('video.*')) {
+                alert('동영상 파일만 선택할 수 있습니다.');
+                this.value = ''; // Clear the input
+                return;
+            }
+            
+            // Create or find preview container
+            let previewContainer = document.getElementById('video-preview');
+            if (!previewContainer) {
+                previewContainer = document.createElement('div');
+                previewContainer.id = 'video-preview';
+                previewContainer.className = 'video-preview';
+                this.parentNode.appendChild(previewContainer);
+            } else {
+                previewContainer.innerHTML = ''; // Clear existing content
+            }
+            
+            // Create video element
+            const video = document.createElement('video');
+            video.controls = true;
+            video.style.maxWidth = '100%';
+            video.style.maxHeight = '200px';
+            
+            // Create file reader to load the video
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                video.src = e.target.result;
+                previewContainer.appendChild(video);
+            };
+            
+            // Read the file
+            reader.readAsDataURL(file);
+        });
+    }
+    
+    // Form submission handling for both photos and videos
     const uploadForm = document.querySelector('#upload-modal .upload-form');
     
     if (uploadForm) {

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>드론 사진 갤러리 - FunDrone</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/board.css">
+    <link rel="stylesheet" href="../../css/gallery.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1><a href="../../index.html">FunDrone</a></h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="../../index.html">홈</a></li>
+                    <li><a href="../board/documents.html">드론 문서 Q&A</a></li>
+                    <li><a href="../board/qna.html">일반 Q&A</a></li>
+                    <li><a href="./photos.html" class="active">드론 사진</a></li>
+                    <li><a href="./videos.html">드론 영상</a></li>
+                    <li><a href="../promotion/about.html">소개</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="page-header">
+        <div class="container">
+            <h1>드론 사진 갤러리</h1>
+            <p>여러분의 멋진 드론 촬영 사진을 공유해보세요</p>
+        </div>
+    </section>
+
+    <section class="gallery-content">
+        <div class="container">
+            <div class="gallery-filter">
+                <div class="filter-options">
+                    <button class="filter-btn active" data-filter="all">전체</button>
+                    <button class="filter-btn" data-filter="fpv">FPV</button>
+                    <button class="filter-btn" data-filter="aerial">항공</button>
+                    <button class="filter-btn" data-filter="landscape">풍경</button>
+                    <button class="filter-btn" data-filter="portrait">인물</button>
+                </div>
+                <div class="search-bar">
+                    <input type="text" placeholder="검색">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+
+            <div class="gallery-grid">
+                <!-- 사진 항목 -->
+                <div class="gallery-item photo aerial">
+                    <div class="gallery-item-thumbnail">
+                        <img src="../../images/gallery/drone-photo-1.jpg" alt="드론으로 촬영한 해변 풍경">
+                    </div>
+                    <div class="gallery-item-info">
+                        <h3>부산 해운대 일출</h3>
+                        <div class="gallery-meta">
+                            <span><i class="fas fa-user"></i> 드론포토그래퍼</span>
+                            <span><i class="fas fa-calendar"></i> 2023-07-10</span>
+                            <span><i class="fas fa-eye"></i> 189</span>
+                        </div>
+                        <p>DJI Mavic 3로 촬영한 부산 해운대의 일출 풍경. 파도와 해변의 아름다운 곡선을 담았습니다.</p>
+                        <a href="#photo-modal" class="btn open-modal">사진 보기</a>
+                    </div>
+                </div>
+
+                <!-- 사진 항목 -->
+                <div class="gallery-item photo fpv">
+                    <div class="gallery-item-thumbnail">
+                        <img src="../../images/gallery/drone-photo-2.jpg" alt="FPV 드론 근접 촬영">
+                    </div>
+                    <div class="gallery-item-info">
+                        <h3>폭포 근접 샷</h3>
+                        <div class="gallery-meta">
+                            <span><i class="fas fa-user"></i> FPV촬영가</span>
+                            <span><i class="fas fa-calendar"></i> 2023-07-01</span>
+                            <span><i class="fas fa-eye"></i> 178</span>
+                        </div>
+                        <p>신비의 섬 제주의 폭포를 FPV 드론으로 근접 촬영한 사진. 방수 케이스를 통해 안전하게 촬영했습니다.</p>
+                        <a href="#photo-modal" class="btn open-modal">사진 보기</a>
+                    </div>
+                </div>
+
+                <!-- 사진 항목 -->
+                <div class="gallery-item photo aerial landscape">
+                    <div class="gallery-item-thumbnail">
+                        <img src="../../images/gallery/drone-photo-3.jpg" alt="드론으로 촬영한 산 풍경">
+                    </div>
+                    <div class="gallery-item-info">
+                        <h3>가을 설악산의 단풍</h3>
+                        <div class="gallery-meta">
+                            <span><i class="fas fa-user"></i> 자연사진가</span>
+                            <span><i class="fas fa-calendar"></i> 2023-06-20</span>
+                            <span><i class="fas fa-eye"></i> 203</span>
+                        </div>
+                        <p>DJI Mini 3 Pro로 촬영한 가을 설악산의 아름다운 단풍 풍경. 파노라마 모드로 넓은 시야를 담았습니다.</p>
+                        <a href="#photo-modal" class="btn open-modal">사진 보기</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-pagination">
+                <a href="#" class="active">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">4</a>
+                <a href="#">5</a>
+                <a href="#" class="next"><i class="fas fa-chevron-right"></i></a>
+            </div>
+
+            <div class="gallery-buttons">
+                <a href="#upload-modal" class="btn open-modal">사진 업로드</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 사진 모달 -->
+    <div id="photo-modal" class="modal">
+        <div class="modal-content photo-modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="photo-view">
+                <img src="../../images/gallery/drone-photo-1-full.jpg" alt="드론으로 촬영한 해변 풍경">
+            </div>
+            <div class="photo-info">
+                <div class="photo-header">
+                    <h2>부산 해운대 일출</h2>
+                    <div class="photo-meta">
+                        <span><i class="fas fa-user"></i> 드론포토그래퍼</span>
+                        <span><i class="fas fa-calendar"></i> 2023-07-10</span>
+                        <span><i class="fas fa-eye"></i> 189</span>
+                    </div>
+                </div>
+                <div class="photo-description">
+                    <p>부산 해운대에서 드론으로 촬영한 일출 장면입니다. 아침 6시경 촬영했으며, 구름 사이로 비치는 햇살과 파도의 움직임을 포착하고자 했습니다.</p>
+                    
+                    <div class="photo-details">
+                        <h4>촬영 정보</h4>
+                        <ul>
+                            <li><strong>장비:</strong> DJI Mavic 3</li>
+                            <li><strong>설정:</strong> f/2.8, 1/60초, ISO 100</li>
+                            <li><strong>고도:</strong> 120m</li>
+                            <li><strong>위치:</strong> 부산 해운대해수욕장</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="photo-actions">
+                    <button><i class="fas fa-thumbs-up"></i> 좋아요</button>
+                    <button><i class="fas fa-share-alt"></i> 공유하기</button>
+                    <button><i class="fas fa-download"></i> 다운로드</button>
+                </div>
+                <div class="photo-comments">
+                    <h4>댓글 (3)</h4>
+                    <div class="comment">
+                        <div class="comment-header">
+                            <span class="comment-author">드론사진팬</span>
+                            <span class="comment-date">2023-07-11</span>
+                        </div>
+                        <div class="comment-content">
+                            <p>정말 아름다운 장면이네요! 색감이 매우 인상적입니다.</p>
+                        </div>
+                    </div>
+                    <div class="comment">
+                        <div class="comment-header">
+                            <span class="comment-author">풍경사진가</span>
+                            <span class="comment-date">2023-07-12</span>
+                        </div>
+                        <div class="comment-content">
+                            <p>구도가 정말 좋습니다. 드론 고도가 120m면 꽤 높은데, 센서가 좋은 모델인가 봅니다.</p>
+                        </div>
+                    </div>
+                    <form class="comment-form">
+                        <textarea placeholder="댓글을 작성하세요..."></textarea>
+                        <button type="submit" class="btn">등록</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 업로드 모달 -->
+    <div id="upload-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>사진 업로드</h2>
+            <form class="upload-form" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="title">제목</label>
+                    <input type="text" id="title" required>
+                </div>
+                <div class="form-group">
+                    <label for="content-category">카테고리</label>
+                    <select id="content-category" required>
+                        <option value="">카테고리 선택</option>
+                        <option value="fpv">FPV</option>
+                        <option value="aerial">항공 촬영</option>
+                        <option value="landscape">풍경</option>
+                        <option value="portrait">인물</option>
+                        <option value="other">기타</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="description">설명</label>
+                    <textarea id="description" rows="5" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="photo-file">사진 파일 업로드</label>
+                    <input type="file" id="photo-file" accept="image/*" required>
+                    <small>최대 20MB, JPG, PNG 형식만 가능</small>
+                </div>
+                <div class="form-group">
+                    <label for="equipment">촬영 장비</label>
+                    <input type="text" id="equipment" placeholder="예: DJI Mavic 3, GoPro Hero 10">
+                </div>
+                <div class="form-group">
+                    <label for="location">촬영 위치</label>
+                    <input type="text" id="location" placeholder="예: 부산 해운대, 경기도 가평">
+                </div>
+                <div class="form-group">
+                    <label for="camera-settings">카메라 설정 (선택사항)</label>
+                    <input type="text" id="camera-settings" placeholder="예: f/2.8, 1/60초, ISO 100">
+                </div>
+                <div class="form-group">
+                    <label for="altitude">촬영 고도 (선택사항)</label>
+                    <input type="text" id="altitude" placeholder="예: 120m">
+                </div>
+                <div class="form-buttons">
+                    <button type="submit" class="btn">업로드</button>
+                    <button type="button" class="btn btn-cancel close-modal">취소</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>FunDrone</h3>
+                    <p>FPV 및 교육용 드론에 관한 모든 정보를 제공합니다.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>링크</h3>
+                    <ul>
+                        <li><a href="../../index.html">홈</a></li>
+                        <li><a href="../board/documents.html">드론 문서 Q&A</a></li>
+                        <li><a href="../board/qna.html">일반 Q&A</a></li>
+                        <li><a href="./photos.html">드론 사진</a></li>
+                        <li><a href="./videos.html">드론 영상</a></li>
+                        <li><a href="../promotion/about.html">소개</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>소셜 미디어</h3>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 FunDrone. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../../js/main.js"></script>
+    <script src="../../js/board.js"></script>
+    <script src="../../js/gallery.js"></script>
+</body>
+</html> 
