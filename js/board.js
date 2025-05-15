@@ -143,10 +143,15 @@ document.addEventListener('DOMContentLoaded', function() {
         // Set the post content
         const postContent = modal.querySelector('.post-content');
         if (postContent) {
+            console.log("Updating modal content with:", postData.content);
+            
+            // Make sure we have valid content
+            const content = postData.content ? postData.content.toString() : '';
+            
             // Create a simple content display with paragraphs
-            if (postData.content.includes('<') && postData.content.includes('>')) {
+            if (content.includes('<') && content.includes('>')) {
                 // Content already has HTML formatting
-                const contentHtml = postData.content;
+                const contentHtml = content;
                 
                 // Update content, preserving any structured elements like file sections
                 const fileSection = postContent.querySelector('.post-files');
@@ -160,9 +165,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else {
                     postContent.innerHTML = contentHtml;
                 }
-            } else {
+            } else if (content.trim() !== '') {
                 // Simple text content, convert to paragraphs
-                const contentHtml = postData.content.split('\n')
+                const contentHtml = content.split('\n')
                     .filter(para => para.trim() !== '')
                     .map(para => `<p>${para}</p>`)
                     .join('');
@@ -178,6 +183,17 @@ document.addEventListener('DOMContentLoaded', function() {
                     postContent.insertAdjacentHTML('beforeend', fileSectionHtml);
                 } else {
                     postContent.innerHTML = contentHtml;
+                }
+            } else {
+                // Empty content case
+                postContent.innerHTML = '<p>게시물 내용이 없습니다.</p>';
+                
+                // Preserve file section if exists
+                const fileSection = postContent.querySelector('.post-files');
+                if (fileSection) {
+                    const fileSectionHtml = fileSection.outerHTML;
+                    postContent.innerHTML = '<p>게시물 내용이 없습니다.</p>';
+                    postContent.insertAdjacentHTML('beforeend', fileSectionHtml);
                 }
             }
         }
@@ -488,7 +504,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 // For this demonstration, we'll just show a success message
                 
                 const formData = new FormData(this);
-                console.log('Form submitted with:', formData);
+                
+                // Log all form data for debugging
+                console.log('Form submitted with:');
+                for (let pair of formData.entries()) {
+                    console.log(pair[0], pair[1]);
+                }
                 
                 // Get form type
                 let successMessage = '문서가 성공적으로 업로드되었습니다!';
@@ -539,6 +560,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const title = formData.get('title') || formData.get('question-title') || '새 게시물';
         const category = formData.get('category') || formData.get('question-category') || 'other';
         const content = formData.get('content') || formData.get('question-content') || '';
+        
+        console.log('New post content:', content);
+        
         const categoryText = getCategoryText(category);
         
         // Get the latest post number
@@ -569,15 +593,20 @@ document.addEventListener('DOMContentLoaded', function() {
             window.postData = {};
         }
         
+        // Make sure content is always treated as a string
+        const processedContent = content ? content.toString() : '';
+        
         window.postData[newPostId] = {
             title: title,
             category: categoryText,
             categoryClass: category,
             author: '현재 사용자',
             date: today,
-            content: content,
+            content: processedContent,
             views: 0
         };
+        
+        console.log('Stored post data:', window.postData[newPostId]);
         
         // Explicitly add click handler to the new modal trigger
         const newModalTrigger = newRow.querySelector('.open-modal');
