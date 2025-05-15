@@ -77,6 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Create unique content for each post
             let content = '';
+            let files = [];
             
             // First, try to find a post-specific content in the modal
             const modal = document.querySelector(link.getAttribute('href'));
@@ -92,10 +93,26 @@ document.addEventListener('DOMContentLoaded', function() {
                         // Clone to avoid modifying the original DOM
                         const contentClone = contentElement.cloneNode(true);
                         
-                        // Preserve file section separately
+                        // Extract file section if exists
                         const fileSection = contentClone.querySelector('.post-files');
                         if (fileSection) {
-                            fileSection.remove(); // Remove from the clone to get clean content
+                            // Extract files and create file objects
+                            const fileItems = fileSection.querySelectorAll('li');
+                            fileItems.forEach((fileItem, fileIndex) => {
+                                const fileName = fileItem.textContent.trim();
+                                const fileType = getFileTypeFromName(fileName);
+                                
+                                files.push({
+                                    id: `file-${postId}-${fileIndex}`,
+                                    name: fileName,
+                                    type: fileType,
+                                    size: 'Unknown',
+                                    url: '#'
+                                });
+                            });
+                            
+                            // Remove file section from content to avoid duplicates
+                            fileSection.remove();
                         }
                         
                         // Get the HTML content
@@ -111,6 +128,15 @@ document.addEventListener('DOMContentLoaded', function() {
                         <p>게시물 상세 내용은 현재 준비 중입니다. 빠른 시일 내에 업데이트하겠습니다.</p>
                     `;
                     console.log(`Generated placeholder content for ${title}`);
+                    
+                    // Add a sample file for each post to ensure uniqueness
+                    files.push({
+                        id: `file-${postId}-sample`,
+                        name: `${title}-첨부파일.pdf`,
+                        type: 'application/pdf',
+                        size: '1.2 MB',
+                        url: '#'
+                    });
                 }
             }
             
@@ -122,11 +148,31 @@ document.addEventListener('DOMContentLoaded', function() {
                 author: author,
                 date: date,
                 content: content,
-                views: views
+                rawContent: content,
+                views: views,
+                files: files
             };
             
             console.log(`Initialized data for existing post: ${postId}`);
         });
+        
+        // Helper function to guess file type from file name
+        function getFileTypeFromName(fileName) {
+            fileName = fileName.toLowerCase();
+            if (fileName.endsWith('.jpg') || fileName.endsWith('.jpeg') || fileName.endsWith('.png') || fileName.endsWith('.gif')) {
+                return 'image';
+            } else if (fileName.endsWith('.pdf')) {
+                return 'application/pdf';
+            } else if (fileName.endsWith('.doc') || fileName.endsWith('.docx')) {
+                return 'application/msword';
+            } else if (fileName.endsWith('.xls') || fileName.endsWith('.xlsx')) {
+                return 'application/excel';
+            } else if (fileName.endsWith('.mp4') || fileName.endsWith('.avi') || fileName.endsWith('.mov')) {
+                return 'video';
+            } else {
+                return 'application/octet-stream';
+            }
+        }
     }
     
     // Helper function to update modal content with post data
@@ -157,19 +203,52 @@ document.addEventListener('DOMContentLoaded', function() {
             // Create a simple content display with paragraphs
             if (content.includes('<') && content.includes('>')) {
                 // Content already has HTML formatting
-                const contentHtml = content;
+                postContent.innerHTML = content;
                 
-                // Update content, preserving any structured elements like file sections
-                const fileSection = postContent.querySelector('.post-files');
-                if (fileSection) {
-                    // Save the file section content
-                    const fileSectionHtml = fileSection.outerHTML;
+                // If the post has files, add them
+                if (postData.files && postData.files.length > 0) {
+                    // Create a new file section or use existing one if it's from the same post
+                    let fileSection = postContent.querySelector('.post-files');
+                    if (!fileSection) {
+                        fileSection = document.createElement('div');
+                        fileSection.className = 'post-files';
+                        fileSection.innerHTML = '<h4>첨부 파일:</h4>';
+                        postContent.appendChild(fileSection);
+                    } else {
+                        // Clear existing file list if needed
+                        fileSection.innerHTML = '<h4>첨부 파일:</h4>';
+                    }
                     
-                    // Replace the content but keep the file section
-                    postContent.innerHTML = contentHtml;
-                    postContent.insertAdjacentHTML('beforeend', fileSectionHtml);
-                } else {
-                    postContent.innerHTML = contentHtml;
+                    // Create a file list
+                    const fileList = document.createElement('ul');
+                    fileSection.appendChild(fileList);
+                    
+                    // Add each file to the list
+                    postData.files.forEach(file => {
+                        const fileItem = document.createElement('li');
+                        
+                        // Get file icon based on type
+                        let iconClass = 'fa-file';
+                        if (file.type && file.type.includes('image')) {
+                            iconClass = 'fa-file-image';
+                        } else if (file.type && file.type.includes('pdf')) {
+                            iconClass = 'fa-file-pdf';
+                        } else if (file.type && (file.type.includes('word') || file.type.includes('doc'))) {
+                            iconClass = 'fa-file-word';
+                        } else if (file.type && (file.type.includes('excel') || file.type.includes('sheet'))) {
+                            iconClass = 'fa-file-excel';
+                        } else if (file.type && file.type.includes('video')) {
+                            iconClass = 'fa-file-video';
+                        }
+                        
+                        fileItem.innerHTML = `
+                            <i class="fas ${iconClass}"></i>
+                            <a href="${file.url || '#'}" target="_blank">${file.name}</a>
+                            (${file.size || 'Unknown'})
+                        `;
+                        
+                        fileList.appendChild(fileItem);
+                    });
                 }
             } else if (content.trim() !== '') {
                 // Simple text content, convert to paragraphs
@@ -178,28 +257,91 @@ document.addEventListener('DOMContentLoaded', function() {
                     .map(para => `<p>${para}</p>`)
                     .join('');
                 
-                // Update content, preserving any structured elements like file sections
-                const fileSection = postContent.querySelector('.post-files');
-                if (fileSection) {
-                    // Save the file section content
-                    const fileSectionHtml = fileSection.outerHTML;
+                postContent.innerHTML = contentHtml;
+                
+                // If the post has files, add them
+                if (postData.files && postData.files.length > 0) {
+                    // Create a new file section
+                    const fileSection = document.createElement('div');
+                    fileSection.className = 'post-files';
+                    fileSection.innerHTML = '<h4>첨부 파일:</h4>';
                     
-                    // Replace the content but keep the file section
-                    postContent.innerHTML = contentHtml;
-                    postContent.insertAdjacentHTML('beforeend', fileSectionHtml);
-                } else {
-                    postContent.innerHTML = contentHtml;
+                    // Create a file list
+                    const fileList = document.createElement('ul');
+                    fileSection.appendChild(fileList);
+                    
+                    // Add each file to the list
+                    postData.files.forEach(file => {
+                        const fileItem = document.createElement('li');
+                        
+                        // Get file icon based on type
+                        let iconClass = 'fa-file';
+                        if (file.type && file.type.includes('image')) {
+                            iconClass = 'fa-file-image';
+                        } else if (file.type && file.type.includes('pdf')) {
+                            iconClass = 'fa-file-pdf';
+                        } else if (file.type && (file.type.includes('word') || file.type.includes('doc'))) {
+                            iconClass = 'fa-file-word';
+                        } else if (file.type && (file.type.includes('excel') || file.type.includes('sheet'))) {
+                            iconClass = 'fa-file-excel';
+                        } else if (file.type && file.type.includes('video')) {
+                            iconClass = 'fa-file-video';
+                        }
+                        
+                        fileItem.innerHTML = `
+                            <i class="fas ${iconClass}"></i>
+                            <a href="${file.url || '#'}" target="_blank">${file.name}</a>
+                            (${file.size || 'Unknown'})
+                        `;
+                        
+                        fileList.appendChild(fileItem);
+                    });
+                    
+                    postContent.appendChild(fileSection);
                 }
             } else {
                 // Empty content case
                 postContent.innerHTML = '<p>게시물 내용이 없습니다.</p>';
                 
-                // Preserve file section if exists
-                const fileSection = postContent.querySelector('.post-files');
-                if (fileSection) {
-                    const fileSectionHtml = fileSection.outerHTML;
-                    postContent.innerHTML = '<p>게시물 내용이 없습니다.</p>';
-                    postContent.insertAdjacentHTML('beforeend', fileSectionHtml);
+                // If the post has files, add them
+                if (postData.files && postData.files.length > 0) {
+                    // Create a new file section
+                    const fileSection = document.createElement('div');
+                    fileSection.className = 'post-files';
+                    fileSection.innerHTML = '<h4>첨부 파일:</h4>';
+                    
+                    // Create a file list
+                    const fileList = document.createElement('ul');
+                    fileSection.appendChild(fileList);
+                    
+                    // Add each file to the list
+                    postData.files.forEach(file => {
+                        const fileItem = document.createElement('li');
+                        
+                        // Get file icon based on type
+                        let iconClass = 'fa-file';
+                        if (file.type && file.type.includes('image')) {
+                            iconClass = 'fa-file-image';
+                        } else if (file.type && file.type.includes('pdf')) {
+                            iconClass = 'fa-file-pdf';
+                        } else if (file.type && (file.type.includes('word') || file.type.includes('doc'))) {
+                            iconClass = 'fa-file-word';
+                        } else if (file.type && (file.type.includes('excel') || file.type.includes('sheet'))) {
+                            iconClass = 'fa-file-excel';
+                        } else if (file.type && file.type.includes('video')) {
+                            iconClass = 'fa-file-video';
+                        }
+                        
+                        fileItem.innerHTML = `
+                            <i class="fas ${iconClass}"></i>
+                            <a href="${file.url || '#'}" target="_blank">${file.name}</a>
+                            (${file.size || 'Unknown'})
+                        `;
+                        
+                        fileList.appendChild(fileItem);
+                    });
+                    
+                    postContent.appendChild(fileSection);
                 }
             }
         }
@@ -457,6 +599,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // File upload preview (for upload forms)
     const fileInput = document.getElementById('file');
     const questionFileInput = document.getElementById('question-file');
+    const editFileInput = document.getElementById('edit-file');
     
     function setupFileUploadPreview(input) {
         if (!input) return;
@@ -506,9 +649,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Setup file upload previews for both document and question upload forms
+    // Setup file upload previews for all upload forms
     setupFileUploadPreview(fileInput);
     setupFileUploadPreview(questionFileInput);
+    setupFileUploadPreview(editFileInput);
     
     // Form submission handling
     const uploadForms = document.querySelectorAll('.upload-form');
@@ -614,6 +758,25 @@ document.addEventListener('DOMContentLoaded', function() {
         // Make sure content is always treated as a string
         const processedContent = content ? content.toString() : '';
         
+        // Process file attachments, if any
+        const files = [];
+        const fileInput = formData.get('file') || formData.get('question-file');
+        
+        if (fileInput && fileInput.files && fileInput.files.length > 0) {
+            for (let i = 0; i < fileInput.files.length; i++) {
+                const file = fileInput.files[i];
+                const fileSize = (file.size / 1024 / 1024).toFixed(2) + ' MB'; // Convert to MB
+                
+                files.push({
+                    id: 'file-' + Date.now() + '-' + i,
+                    name: file.name,
+                    type: file.type,
+                    size: fileSize,
+                    url: '#', // In a real app, this would be the file's URL after upload
+                });
+            }
+        }
+        
         window.postData[newPostId] = {
             title: title,
             category: categoryText,
@@ -622,7 +785,8 @@ document.addEventListener('DOMContentLoaded', function() {
             date: today,
             content: processedContent,
             rawContent: processedContent, // Store raw content for editing
-            views: 0
+            views: 0,
+            files: files  // Store files data
         };
         
         console.log('Stored post data:', window.postData[newPostId]);
@@ -763,21 +927,44 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Show existing files if any
         const filesListContainer = editModal.querySelector('.edit-files-list');
-        if (filesListContainer && postData.files && postData.files.length > 0) {
+        if (filesListContainer) {
             filesListContainer.innerHTML = '';
-            postData.files.forEach(file => {
-                const fileItem = document.createElement('div');
-                fileItem.className = 'file-item';
-                fileItem.innerHTML = `
-                    <span><i class="fas fa-file"></i> ${file.name}</span>
-                    <button type="button" class="remove-file-btn" data-file-id="${file.id}">
-                        <i class="fas fa-times"></i>
-                    </button>
-                `;
-                filesListContainer.appendChild(fileItem);
-            });
-        } else if (filesListContainer) {
-            filesListContainer.innerHTML = '<p>첨부된 파일이 없습니다.</p>';
+            
+            if (postData.files && postData.files.length > 0) {
+                postData.files.forEach(file => {
+                    const fileItem = document.createElement('div');
+                    fileItem.className = 'file-item';
+                    fileItem.innerHTML = `
+                        <span><i class="fas fa-file"></i> ${file.name}</span>
+                        <button type="button" class="remove-file-btn" data-file-id="${file.id}">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
+                    filesListContainer.appendChild(fileItem);
+                });
+                
+                // Add event listeners for file removal buttons
+                const removeFileButtons = filesListContainer.querySelectorAll('.remove-file-btn');
+                removeFileButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const fileId = this.getAttribute('data-file-id');
+                        if (fileId && postData.files) {
+                            // Remove the file from the data
+                            postData.files = postData.files.filter(file => file.id !== fileId);
+                            
+                            // Remove the file item from the UI
+                            this.closest('.file-item').remove();
+                            
+                            // If no files left, show a message
+                            if (postData.files.length === 0 && filesListContainer.children.length === 0) {
+                                filesListContainer.innerHTML = '<p>첨부된 파일이 없습니다.</p>';
+                            }
+                        }
+                    });
+                });
+            } else {
+                filesListContainer.innerHTML = '<p>첨부된 파일이 없습니다.</p>';
+            }
         }
         
         // Display the edit modal
@@ -943,12 +1130,33 @@ document.addEventListener('DOMContentLoaded', function() {
             // Get the category text
             const categoryText = getCategoryText(categoryValue);
             
+            // Check for file uploads
+            const editFileInput = document.getElementById('edit-file');
+            let files = window.postData[postId].files || [];
+            
+            // Add new files if uploaded
+            if (editFileInput && editFileInput.files && editFileInput.files.length > 0) {
+                for (let i = 0; i < editFileInput.files.length; i++) {
+                    const file = editFileInput.files[i];
+                    const fileSize = (file.size / 1024 / 1024).toFixed(2) + ' MB'; // Convert to MB
+                    
+                    files.push({
+                        id: 'file-' + Date.now() + '-' + i,
+                        name: file.name,
+                        type: file.type,
+                        size: fileSize,
+                        url: '#', // In a real app, this would be the file's URL after upload
+                    });
+                }
+            }
+            
             // Update the post data
             window.postData[postId].title = title;
             window.postData[postId].category = categoryText;
             window.postData[postId].categoryClass = categoryValue;
             window.postData[postId].content = content;
             window.postData[postId].rawContent = content; // Store raw content for editing
+            window.postData[postId].files = files; // Update file attachments
             
             // Update the row in the table
             const postRow = document.getElementById(postId);
