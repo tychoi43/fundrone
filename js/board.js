@@ -68,6 +68,10 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Function to display rows for the current page
         function displayRows(page) {
+            // Validate page number
+            if (page < 1) page = 1;
+            if (page > totalPages) page = totalPages;
+            
             // Hide all rows
             allRows.forEach(row => {
                 row.style.display = 'none';
@@ -85,15 +89,20 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             // Update pagination active state
-            paginationLinks.forEach((link, index) => {
-                if (index > 0 && index <= totalPages) { // Skip the 'next' button
-                    if (index === page) {
+            paginationLinks.forEach(link => {
+                // Remove active class from all links
+                link.classList.remove('active');
+                
+                // Add active class to current page link
+                if (!link.classList.contains('next')) {
+                    const linkPage = parseInt(link.textContent);
+                    if (linkPage === page) {
                         link.classList.add('active');
-                    } else {
-                        link.classList.remove('active');
                     }
                 }
             });
+            
+            console.log('Displaying page', page, 'of', totalPages);
         }
         
         // Add click event to pagination links
@@ -108,9 +117,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         displayRows(currentPage);
                     }
                 } else {
-                    // Page number clicked
-                    currentPage = index;
-                    displayRows(currentPage);
+                    // Page number clicked - get the actual page number from the link text
+                    const pageNum = parseInt(this.textContent);
+                    if (!isNaN(pageNum)) {
+                        currentPage = pageNum;
+                        displayRows(currentPage);
+                    }
                 }
             });
         });

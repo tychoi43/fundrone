@@ -49,6 +49,10 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Function to display items for the current page
         function displayGalleryItems(page) {
+            // Validate page number
+            if (page < 1) page = 1;
+            if (page > totalPages) page = totalPages;
+            
             // Get visible items (those matching current filter)
             const visibleItems = allItems.filter(item => {
                 const activeFilter = document.querySelector('.filter-btn.active').getAttribute('data-filter');
@@ -72,15 +76,20 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             // Update pagination active state
-            paginationLinks.forEach((link, index) => {
-                if (index > 0 && index <= totalPages) { // Skip the 'next' button
-                    if (index === page) {
+            paginationLinks.forEach(link => {
+                // Remove active class from all links
+                link.classList.remove('active');
+                
+                // Add active class to current page link
+                if (!link.classList.contains('next')) {
+                    const linkPage = parseInt(link.textContent);
+                    if (linkPage === page) {
                         link.classList.add('active');
-                    } else {
-                        link.classList.remove('active');
                     }
                 }
             });
+            
+            console.log('Displaying gallery page', page, 'of', totalPages, 'with', visibleItems.length, 'visible items');
         }
         
         // Add click event to pagination links
@@ -95,9 +104,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         displayGalleryItems(currentPage);
                     }
                 } else {
-                    // Page number clicked
-                    currentPage = index;
-                    displayGalleryItems(currentPage);
+                    // Page number clicked - get the actual page number from the link text
+                    const pageNum = parseInt(this.textContent);
+                    if (!isNaN(pageNum)) {
+                        currentPage = pageNum;
+                        displayGalleryItems(currentPage);
+                    }
                 }
             });
         });
@@ -224,6 +236,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const videoFileInput = document.getElementById('video-file');
     
     function createImagePreview(input, previewContainerId) {
+        if (!input) return;
+        
         input.addEventListener('change', function() {
             // Check if file was selected
             if (!this.files || !this.files[0]) return;
@@ -500,4 +514,4 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-}); 
+});
