@@ -190,11 +190,11 @@
             <form class="upload-form" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="title">제목</label>
-                    <input type="text" id="title" required>
+                    <input type="text" id="title" name="title" required>
                 </div>
                 <div class="form-group">
                     <label for="content-category">카테고리</label>
-                    <select id="content-category" required>
+                    <select id="content-category" name="content-category" required>
                         <option value="">카테고리 선택</option>
                         <option value="fpv">FPV</option>
                         <option value="aerial">항공 촬영</option>
@@ -205,28 +205,28 @@
                 </div>
                 <div class="form-group">
                     <label for="description">설명</label>
-                    <textarea id="description" rows="5" required></textarea>
+                    <textarea id="description" name="description" rows="5" required></textarea>
                 </div>
                 <div class="form-group">
                     <label for="photo-file">사진 파일 업로드</label>
-                    <input type="file" id="photo-file" accept="image/*" required>
+                    <input type="file" id="photo-file" name="photo-file" accept="image/*" required>
                     <small>최대 20MB, JPG, PNG 형식만 가능</small>
                 </div>
                 <div class="form-group">
                     <label for="equipment">촬영 장비</label>
-                    <input type="text" id="equipment" placeholder="예: DJI Mavic 3, GoPro Hero 10">
+                    <input type="text" id="equipment" name="equipment" placeholder="예: DJI Mavic 3, GoPro Hero 10">
                 </div>
                 <div class="form-group">
                     <label for="location">촬영 위치</label>
-                    <input type="text" id="location" placeholder="예: 부산 해운대, 경기도 가평">
+                    <input type="text" id="location" name="location" placeholder="예: 부산 해운대, 경기도 가평">
                 </div>
                 <div class="form-group">
                     <label for="camera-settings">카메라 설정 (선택사항)</label>
-                    <input type="text" id="camera-settings" placeholder="예: f/2.8, 1/60초, ISO 100">
+                    <input type="text" id="camera-settings" name="camera-settings" placeholder="예: f/2.8, 1/60초, ISO 100">
                 </div>
                 <div class="form-group">
                     <label for="altitude">촬영 고도 (선택사항)</label>
-                    <input type="text" id="altitude" placeholder="예: 120m">
+                    <input type="text" id="altitude" name="altitude" placeholder="예: 120m">
                 </div>
                 <div class="form-buttons">
                     <button type="submit" class="btn">업로드</button>

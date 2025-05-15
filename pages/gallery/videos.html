@@ -200,11 +200,11 @@
             <form class="upload-form" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="title">제목</label>
-                    <input type="text" id="title" required>
+                    <input type="text" id="title" name="title" required>
                 </div>
                 <div class="form-group">
                     <label for="content-category">카테고리</label>
-                    <select id="content-category" required>
+                    <select id="content-category" name="content-category" required>
                         <option value="">카테고리 선택</option>
                         <option value="fpv">FPV</option>
                         <option value="aerial">항공 촬영</option>
@@ -215,11 +215,11 @@
                 </div>
                 <div class="form-group">
                     <label for="description">설명</label>
-                    <textarea id="description" rows="5" required></textarea>
+                    <textarea id="description" name="description" rows="5" required></textarea>
                 </div>
                 <div class="form-group">
                     <label for="upload-method">업로드 방법</label>
-                    <select id="upload-method" required>
+                    <select id="upload-method" name="upload-method" required>
                         <option value="">방법 선택</option>
                         <option value="file">파일 직접 업로드</option>
                         <option value="url">동영상 URL 입력</option>
@@ -227,34 +227,34 @@
                 </div>
                 <div class="form-group video-file-group" style="display: none;">
                     <label for="video-file">영상 파일 업로드</label>
-                    <input type="file" id="video-file" accept="video/*">
+                    <input type="file" id="video-file" name="video-file" accept="video/*">
                     <small>최대 500MB, MP4, MOV 형식만 가능</small>
                 </div>
                 <div class="form-group video-url-group" style="display: none;">
                     <label for="video-url">동영상 URL (YouTube, Vimeo 등)</label>
-                    <input type="url" id="video-url">
+                    <input type="url" id="video-url" name="video-url">
                     <small>유튜브나 비메오 등에 업로드한 영상의 URL을 입력하세요.</small>
                 </div>
                 <div class="form-group">
                     <label for="thumbnail">썸네일 이미지</label>
-                    <input type="file" id="thumbnail" accept="image/*">
+                    <input type="file" id="thumbnail" name="thumbnail" accept="image/*">
                     <small>영상을 대표하는 이미지를 업로드하세요. 최대 10MB.</small>
                 </div>
                 <div class="form-group">
                     <label for="equipment">촬영 장비</label>
-                    <input type="text" id="equipment" placeholder="예: DJI Mavic 3, GoPro Hero 10">
+                    <input type="text" id="equipment" name="equipment" placeholder="예: DJI Mavic 3, GoPro Hero 10">
                 </div>
                 <div class="form-group">
                     <label for="location">촬영 위치</label>
-                    <input type="text" id="location" placeholder="예: 부산 해운대, 경기도 가평">
+                    <input type="text" id="location" name="location" placeholder="예: 부산 해운대, 경기도 가평">
                 </div>
                 <div class="form-group">
                     <label for="video-resolution">해상도 (선택사항)</label>
-                    <input type="text" id="video-resolution" placeholder="예: 4K 60fps, 1080p 30fps">
+                    <input type="text" id="video-resolution" name="video-resolution" placeholder="예: 4K 60fps, 1080p 30fps">
                 </div>
                 <div class="form-group">
                     <label for="flight-time">비행 시간 (선택사항)</label>
-                    <input type="text" id="flight-time" placeholder="예: 약 5분">
+                    <input type="text" id="flight-time" name="flight-time" placeholder="예: 약 5분">
                 </div>
                 <div class="form-buttons">
                     <button type="submit" class="btn">업로드</button>

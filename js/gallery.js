@@ -22,8 +22,88 @@ document.addEventListener('DOMContentLoaded', function() {
                         item.style.display = 'none';
                     }
                 });
+                
+                // Reset pagination after filtering
+                if (paginationLinks.length > 0) {
+                    currentPage = 1;
+                    displayGalleryItems(currentPage);
+                }
             });
         });
+    }
+    
+    // Gallery pagination functionality
+    const paginationLinks = document.querySelectorAll('.gallery-pagination a');
+    
+    if (paginationLinks.length > 0 && galleryItems.length > 0) {
+        // Set default items per page
+        const itemsPerPage = 3;
+        
+        // Calculate total pages
+        const totalItems = galleryItems.length;
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+        
+        // Store all gallery items data
+        const allItems = Array.from(galleryItems);
+        let currentPage = 1;
+        
+        // Function to display items for the current page
+        function displayGalleryItems(page) {
+            // Get visible items (those matching current filter)
+            const visibleItems = allItems.filter(item => {
+                const activeFilter = document.querySelector('.filter-btn.active').getAttribute('data-filter');
+                return activeFilter === 'all' || item.classList.contains(activeFilter);
+            });
+            
+            // Hide all items
+            allItems.forEach(item => {
+                item.style.display = 'none';
+            });
+            
+            // Calculate start and end index for the current page
+            const startIndex = (page - 1) * itemsPerPage;
+            const endIndex = Math.min(startIndex + itemsPerPage, visibleItems.length);
+            
+            // Show items for the current page
+            for (let i = startIndex; i < endIndex; i++) {
+                if (visibleItems[i]) {
+                    visibleItems[i].style.display = '';
+                }
+            }
+            
+            // Update pagination active state
+            paginationLinks.forEach((link, index) => {
+                if (index > 0 && index <= totalPages) { // Skip the 'next' button
+                    if (index === page) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                }
+            });
+        }
+        
+        // Add click event to pagination links
+        paginationLinks.forEach((link, index) => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                if (this.classList.contains('next')) {
+                    // Next button clicked
+                    if (currentPage < totalPages) {
+                        currentPage++;
+                        displayGalleryItems(currentPage);
+                    }
+                } else {
+                    // Page number clicked
+                    currentPage = index;
+                    displayGalleryItems(currentPage);
+                }
+            });
+        });
+        
+        // Initialize with first page
+        displayGalleryItems(currentPage);
     }
     
     // Search functionality
@@ -46,6 +126,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 galleryItems.forEach(item => {
                     item.style.display = '';
                 });
+                // Reset pagination after search
+                if (paginationLinks.length > 0) {
+                    currentPage = 1;
+                    displayGalleryItems(currentPage);
+                }
                 return;
             }
             
@@ -60,6 +145,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     item.style.display = 'none';
                 }
             });
+            
+            // Reset pagination after search
+            if (paginationLinks.length > 0) {
+                currentPage = 1;
+                // We don't call displayGalleryItems here because our search already sets visibility
+            }
         }
     }
     
@@ -256,13 +347,114 @@ document.addEventListener('DOMContentLoaded', function() {
                     modal.style.display = 'none';
                     document.body.style.overflow = '';
                     
+                    // Add new item to gallery
+                    addNewItemToGallery(formData);
+                    
                     // Reset the form for next use
                     setTimeout(() => {
-                        location.reload(); // In a real app, would reset form without reload
+                        this.reset();
+                        const previews = this.querySelectorAll('.image-preview, .video-preview');
+                        previews.forEach(preview => preview.remove());
                     }, 500);
                 }
             }, 2000);
         });
+    }
+    
+    // Function to add new item to gallery
+    function addNewItemToGallery(formData) {
+        const galleryGrid = document.querySelector('.gallery-grid');
+        if (!galleryGrid) return;
+        
+        // Get form data
+        const title = formData.get('title') || '새 항목';
+        const category = formData.get('content-category') || 'other';
+        const description = formData.get('description') || '';
+        
+        // Determine if it's a photo or video
+        let itemType = 'photo';
+        const pageUrl = window.location.pathname;
+        if (pageUrl.includes('videos.html')) {
+            itemType = 'video';
+        }
+        
+        // Create a new gallery item
+        const newItem = document.createElement('div');
+        newItem.className = `gallery-item ${itemType} ${category}`;
+        
+        const today = new Date().toISOString().split('T')[0];
+        
+        // Use a placeholder image
+        const thumbnailSrc = '../../images/gallery/placeholder.jpg';
+        
+        if (itemType === 'photo') {
+            newItem.innerHTML = `
+                <div class="gallery-item-thumbnail">
+                    <img src="${thumbnailSrc}" alt="${title}">
+                </div>
+                <div class="gallery-item-info">
+                    <h3>${title}</h3>
+                    <div class="gallery-meta">
+                        <span><i class="fas fa-user"></i> 현재 사용자</span>
+                        <span><i class="fas fa-calendar"></i> ${today}</span>
+                        <span><i class="fas fa-eye"></i> 0</span>
+                    </div>
+                    <p>${description}</p>
+                    <a href="#photo-modal" class="btn open-modal">사진 보기</a>
+                </div>
+            `;
+        } else {
+            newItem.innerHTML = `
+                <div class="gallery-item-thumbnail">
+                    <img src="${thumbnailSrc}" alt="${title}">
+                    <div class="play-icon">
+                        <i class="fas fa-play"></i>
+                    </div>
+                </div>
+                <div class="gallery-item-info">
+                    <h3>${title}</h3>
+                    <div class="gallery-meta">
+                        <span><i class="fas fa-user"></i> 현재 사용자</span>
+                        <span><i class="fas fa-calendar"></i> ${today}</span>
+                        <span><i class="fas fa-eye"></i> 0</span>
+                    </div>
+                    <p>${description}</p>
+                    <a href="#video-modal" class="btn open-modal" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ">영상 보기</a>
+                </div>
+            `;
+        }
+        
+        // Add the new item to the gallery
+        galleryGrid.insertBefore(newItem, galleryGrid.firstChild);
+        
+        // Reinitialize event listeners for the new item
+        const newModalTrigger = newItem.querySelector('.open-modal');
+        if (newModalTrigger) {
+            newModalTrigger.addEventListener('click', function(e) {
+                e.preventDefault();
+                const modalId = this.getAttribute('href');
+                const modal = document.querySelector(modalId);
+                if (modal) {
+                    modal.style.display = 'block';
+                    document.body.style.overflow = 'hidden';
+                    
+                    // If it's a video, update iframe
+                    if (modalId === '#video-modal') {
+                        const videoUrl = this.getAttribute('data-video');
+                        const videoIframe = modal.querySelector('iframe');
+                        if (videoIframe) {
+                            videoIframe.src = videoUrl;
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Update pagination since we have a new item
+        if (paginationLinks.length > 0) {
+            currentPage = 1;
+            displayGalleryItems(currentPage);
+        }
     }
     
     // Comment form handling

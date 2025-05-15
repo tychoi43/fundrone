@@ -247,14 +247,14 @@
         <div class="modal-content">
             <span class="close-modal">&times;</span>
             <h2>새 질문 작성</h2>
-            <form class="upload-form">
+            <form class="upload-form" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="question-title">제목</label>
-                    <input type="text" id="question-title" placeholder="질문 제목을 입력하세요" required>
+                    <input type="text" id="question-title" name="question-title" placeholder="질문 제목을 입력하세요" required>
                 </div>
                 <div class="form-group">
                     <label for="question-category">카테고리</label>
-                    <select id="question-category" required>
+                    <select id="question-category" name="question-category" required>
                         <option value="">카테고리 선택</option>
                         <option value="fpv">FPV 드론</option>
                         <option value="educational">교육용 드론</option>
@@ -265,11 +265,11 @@
                 </div>
                 <div class="form-group">
                     <label for="question-content">질문 내용</label>
-                    <textarea id="question-content" rows="10" placeholder="질문 내용을 상세히 작성해주세요..." required></textarea>
+                    <textarea id="question-content" name="question-content" rows="10" placeholder="질문 내용을 상세히 작성해주세요..." required></textarea>
                 </div>
                 <div class="form-group">
                     <label for="question-file">파일 첨부 (선택사항)</label>
-                    <input type="file" id="question-file" multiple>
+                    <input type="file" id="question-file" name="question-file" multiple>
                     <small>이미지나 관련 파일을 첨부하면 보다 정확한 답변을 받을 수 있습니다.</small>
                 </div>
                 <div class="form-buttons">
@@ -279,6 +279,19 @@
             </form>
         </div>
     </div>
+
+    <!-- 답변 폼 업데이트 -->
+    <script id="answer-form-template" type="text/template">
+        <div class="answer-form">
+            <h4>답변 작성하기</h4>
+            <form>
+                <div class="form-group">
+                    <textarea rows="5" name="answer-content" placeholder="답변을 작성해주세요..." required></textarea>
+                </div>
+                <button type="submit" class="btn">답변 등록</button>
+            </form>
+        </div>
+    </script>
 
     <footer>
         <div class="container">
