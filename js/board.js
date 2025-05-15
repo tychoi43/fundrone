@@ -10,7 +10,53 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             const modalId = this.getAttribute('href');
             const modal = document.querySelector(modalId);
+            const postId = this.getAttribute('data-post-id');
+            
             if (modal) {
+                if (postId && window.postData && window.postData[postId]) {
+                    // Handle new posts with stored data
+                    const postData = window.postData[postId];
+                    
+                    // Set content in the modal
+                    const modalHeader = modal.querySelector('.post-header');
+                    if (modalHeader) {
+                        modalHeader.querySelector('h2').textContent = postData.title;
+                        const postInfo = modalHeader.querySelector('.post-info');
+                        if (postInfo) {
+                            const infoSpans = postInfo.querySelectorAll('span');
+                            if (infoSpans.length >= 3) {
+                                infoSpans[0].innerHTML = `<i class="fas fa-user"></i> ${postData.author}`;
+                                infoSpans[1].innerHTML = `<i class="fas fa-calendar"></i> ${postData.date}`;
+                                infoSpans[2].innerHTML = `<i class="fas fa-eye"></i> ${postData.views}`;
+                            }
+                        }
+                    }
+                    
+                    // Set the post content
+                    const postContent = modal.querySelector('.post-content');
+                    if (postContent) {
+                        // Create a simple content display with paragraphs
+                        const contentHtml = postData.content.split('\n')
+                            .filter(para => para.trim() !== '')
+                            .map(para => `<p>${para}</p>`)
+                            .join('');
+                        
+                        // Keep any heading elements that might be in the modal template
+                        const headings = postContent.querySelectorAll('h3, h4');
+                        const headingsHtml = Array.from(headings).map(h => h.outerHTML).join('');
+                        
+                        // Update content, preserving any structured elements like file sections
+                        const fileSection = postContent.querySelector('.post-files');
+                        if (fileSection) {
+                            postContent.innerHTML = headingsHtml + contentHtml;
+                            postContent.appendChild(fileSection);
+                        } else {
+                            postContent.innerHTML = headingsHtml + contentHtml;
+                        }
+                    }
+                } 
+                // If this is an existing demo post without data-post-id, we'll just show the default content
+                
                 modal.style.display = 'block';
                 document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
             }
@@ -54,88 +100,120 @@ document.addEventListener('DOMContentLoaded', function() {
     const paginationLinks = document.querySelectorAll('.board-pagination a');
     const tableRows = document.querySelectorAll('.board-list tbody tr');
     
-    if (paginationLinks.length > 0 && tableRows.length > 0) {
-        // Set default items per page
-        const itemsPerPage = 5;
+    // Set default items per page
+    const itemsPerPage = 5;
+    let currentPage = 1;
+    let allRows = [];
+    
+    // Function to update pagination
+    function updatePagination() {
+        console.log("Updating pagination...");
+        
+        // Get fresh references to all rows
+        allRows = Array.from(document.querySelectorAll('.board-list tbody tr'));
         
         // Calculate total pages
-        const totalItems = tableRows.length;
+        const totalItems = allRows.length;
         const totalPages = Math.ceil(totalItems / itemsPerPage);
         
+        // Set current page to 1 if we're adding a new item
+        currentPage = 1;
+        
+        // Display rows for current page
+        displayRows(currentPage);
+        
+        console.log(`Pagination updated: ${totalItems} items, ${totalPages} pages, current page is ${currentPage}`);
+    }
+    
+    if (paginationLinks.length > 0 && tableRows.length > 0) {
         // Store all rows data
-        const allRows = Array.from(tableRows);
-        let currentPage = 1;
+        allRows = Array.from(tableRows);
         
-        // Function to display rows for the current page
-        function displayRows(page) {
-            // Validate page number
-            if (page < 1) page = 1;
-            if (page > totalPages) page = totalPages;
-            
-            // Hide all rows
-            allRows.forEach(row => {
-                row.style.display = 'none';
-            });
-            
-            // Calculate start and end index for the current page
-            const startIndex = (page - 1) * itemsPerPage;
-            const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
-            
-            // Show rows for the current page
-            for (let i = startIndex; i < endIndex; i++) {
-                if (allRows[i]) {
-                    allRows[i].style.display = '';
-                }
-            }
-            
-            // Update pagination active state
-            paginationLinks.forEach(link => {
-                // Remove active class from all links
-                link.classList.remove('active');
-                
-                // Add active class to current page link
-                if (!link.classList.contains('next')) {
-                    const linkPage = parseInt(link.textContent);
-                    if (linkPage === page) {
-                        link.classList.add('active');
-                    }
-                }
-            });
-            
-            console.log('Displaying page', page, 'of', totalPages);
-        }
-        
-        // Add click event to pagination links
-        paginationLinks.forEach((link, index) => {
-            link.addEventListener('click', function(e) {
+        // Add click event to pagination links using event delegation
+        const paginationContainer = document.querySelector('.board-pagination');
+        if (paginationContainer) {
+            paginationContainer.addEventListener('click', function(e) {
                 e.preventDefault();
                 
-                if (this.classList.contains('next')) {
-                    // Next button clicked
-                    if (currentPage < totalPages) {
-                        currentPage++;
-                        displayRows(currentPage);
-                    }
-                } else {
-                    // Page number clicked - get the actual page number from the link text
-                    const pageNum = parseInt(this.textContent);
-                    if (!isNaN(pageNum)) {
-                        currentPage = pageNum;
-                        displayRows(currentPage);
+                // Make sure we clicked on a page link
+                if (e.target.tagName === 'A') {
+                    const link = e.target;
+                    
+                    if (link.classList.contains('next')) {
+                        // Next button clicked
+                        const totalPages = Math.ceil(allRows.length / itemsPerPage);
+                        if (currentPage < totalPages) {
+                            currentPage++;
+                            displayRows(currentPage);
+                        }
+                    } else {
+                        // Page number clicked - get the actual page number from the link text
+                        const pageNum = parseInt(link.textContent);
+                        if (!isNaN(pageNum)) {
+                            currentPage = pageNum;
+                            displayRows(currentPage);
+                        }
                     }
                 }
             });
-        });
+        }
         
         // Initialize with first page
         displayRows(currentPage);
+    }
+    
+    // Function to display rows for the current page
+    function displayRows(page) {
+        console.log("Displaying page", page);
+        
+        // Get fresh references to all rows
+        if (allRows.length === 0) {
+            allRows = Array.from(document.querySelectorAll('.board-list tbody tr'));
+        }
+        
+        // Validate page number
+        if (page < 1) page = 1;
+        const totalPages = Math.ceil(allRows.length / itemsPerPage);
+        if (page > totalPages) page = totalPages;
+        
+        // Hide all rows
+        allRows.forEach(row => {
+            row.style.display = 'none';
+        });
+        
+        // Calculate start and end index for the current page
+        const startIndex = (page - 1) * itemsPerPage;
+        const endIndex = Math.min(startIndex + itemsPerPage, allRows.length);
+        
+        // Show rows for the current page
+        for (let i = startIndex; i < endIndex; i++) {
+            if (allRows[i]) {
+                allRows[i].style.display = '';
+            }
+        }
+        
+        // Update pagination active state
+        paginationLinks.forEach(link => {
+            // Remove active class from all links
+            link.classList.remove('active');
+            
+            // Add active class to current page link
+            if (!link.classList.contains('next')) {
+                const linkPage = parseInt(link.textContent);
+                if (linkPage === page) {
+                    link.classList.add('active');
+                }
+            }
+        });
+        
+        console.log('Displayed page', page, 'of', totalPages, 'with items', startIndex, 'to', endIndex-1);
     }
     
     // Search functionality
     const searchInput = document.querySelector('.search-bar input');
     const searchButton = document.querySelector('.search-bar button');
     
-    if (searchInput && searchButton && tableRows.length > 0) {
+    if (searchInput && searchButton) {
         searchButton.addEventListener('click', performSearch);
         searchInput.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
@@ -146,22 +224,35 @@ document.addEventListener('DOMContentLoaded', function() {
         function performSearch() {
             const searchTerm = searchInput.value.toLowerCase().trim();
             
-            tableRows.forEach(row => {
+            // Get fresh list of rows
+            const allRows = Array.from(document.querySelectorAll('.board-list tbody tr'));
+            
+            allRows.forEach(row => {
                 const title = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
                 const author = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
                 
                 if (title.includes(searchTerm) || author.includes(searchTerm)) {
                     row.style.display = '';
+                    row.dataset.filtered = 'visible';
                 } else {
                     row.style.display = 'none';
+                    row.dataset.filtered = 'hidden';
                 }
             });
             
-            // Reset pagination after search
-            if (paginationLinks.length > 0) {
-                paginationLinks[0].classList.add('active');
-                for (let i = 1; i < paginationLinks.length; i++) {
-                    paginationLinks[i].classList.remove('active');
+            // Reset to first page after search
+            currentPage = 1;
+            
+            // Only apply pagination if search term is empty
+            if (searchTerm === '') {
+                updatePagination();
+            } else {
+                // Otherwise, show all visible items without pagination
+                paginationLinks.forEach(link => {
+                    link.classList.remove('active');
+                });
+                if (paginationLinks.length > 0) {
+                    paginationLinks[0].classList.add('active');
                 }
             }
         }
@@ -170,28 +261,42 @@ document.addEventListener('DOMContentLoaded', function() {
     // Category filter functionality
     const categoryFilter = document.querySelector('.filter-options select');
     
-    if (categoryFilter && tableRows.length > 0) {
+    if (categoryFilter) {
         categoryFilter.addEventListener('change', function() {
             const selectedCategory = this.value;
             
-            tableRows.forEach(row => {
+            // Get fresh list of rows
+            const allRows = Array.from(document.querySelectorAll('.board-list tbody tr'));
+            
+            allRows.forEach(row => {
                 if (selectedCategory === 'all') {
                     row.style.display = '';
+                    row.dataset.filtered = 'visible';
                 } else {
                     const categoryCell = row.querySelector('td:nth-child(2) span');
                     if (categoryCell && categoryCell.classList.contains(selectedCategory)) {
                         row.style.display = '';
+                        row.dataset.filtered = 'visible';
                     } else {
                         row.style.display = 'none';
+                        row.dataset.filtered = 'hidden';
                     }
                 }
             });
             
-            // Reset pagination after filtering
-            if (paginationLinks.length > 0) {
-                paginationLinks[0].classList.add('active');
-                for (let i = 1; i < paginationLinks.length; i++) {
-                    paginationLinks[i].classList.remove('active');
+            // Reset to first page after filtering
+            currentPage = 1;
+            
+            // Only apply pagination if category is 'all'
+            if (selectedCategory === 'all') {
+                updatePagination();
+            } else {
+                // Clear pagination active states
+                paginationLinks.forEach(link => {
+                    link.classList.remove('active');
+                });
+                if (paginationLinks.length > 0) {
+                    paginationLinks[0].classList.add('active');
                 }
             }
         });
@@ -315,6 +420,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Get form data
         const title = formData.get('title') || formData.get('question-title') || '새 게시물';
         const category = formData.get('category') || formData.get('question-category') || 'other';
+        const content = formData.get('content') || formData.get('question-content') || '';
         const categoryText = getCategoryText(category);
         
         // Get the latest post number
@@ -324,10 +430,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const newRow = document.createElement('tr');
         const today = new Date().toISOString().split('T')[0];
         
+        // Create a unique ID for the new post
+        const newPostId = 'post-' + Date.now();
+        newRow.id = newPostId;
+        
         newRow.innerHTML = `
             <td>${latestNumber}</td>
             <td><span class="category ${category}">${categoryText}</span></td>
-            <td><a href="#post-modal" class="open-modal">${title}</a></td>
+            <td><a href="#post-modal" class="open-modal" data-post-id="${newPostId}">${title}</a></td>
             <td>현재 사용자</td>
             <td>${today}</td>
             <td>0</td>
@@ -336,19 +446,29 @@ document.addEventListener('DOMContentLoaded', function() {
         // Add to the board
         boardList.insertBefore(newRow, boardList.firstChild);
         
+        // Store the post data to be used when opening the modal
+        if (!window.postData) {
+            window.postData = {};
+        }
+        
+        window.postData[newPostId] = {
+            title: title,
+            category: categoryText,
+            author: '현재 사용자',
+            date: today,
+            content: content,
+            views: 0
+        };
+        
         // Reinitialize event listeners for the new item
         const newModalTrigger = newRow.querySelector('.open-modal');
         if (newModalTrigger) {
-            newModalTrigger.addEventListener('click', function(e) {
-                e.preventDefault();
-                const modalId = this.getAttribute('href');
-                const modal = document.querySelector(modalId);
-                if (modal) {
-                    modal.style.display = 'block';
-                    document.body.style.overflow = 'hidden';
-                }
-            });
+            // Use the existing event listener through event delegation
+            // No need to add a new click handler as it's handled by the main modal trigger code
         }
+        
+        // Update pagination to show the first page with the new post
+        updatePagination();
     }
     
     // Helper function to get category text
