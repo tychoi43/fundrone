@@ -1,10 +1,18 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize post data storage if not exists
+    if (!window.postData) {
+        window.postData = {};
+    }
+    
+    // Pre-load existing posts data
+    initializeExistingPostsData();
+    
     // Modal functionality
     const modals = document.querySelectorAll('.modal');
     const modalTriggers = document.querySelectorAll('.open-modal');
     const modalClosers = document.querySelectorAll('.close-modal');
     
-    // Open modal
+    // Open modal - for posts
     modalTriggers.forEach(trigger => {
         trigger.addEventListener('click', function(e) {
             e.preventDefault();
@@ -13,55 +21,167 @@ document.addEventListener('DOMContentLoaded', function() {
             const postId = this.getAttribute('data-post-id');
             
             if (modal) {
+                // Check if it's a post with stored data
                 if (postId && window.postData && window.postData[postId]) {
-                    // Handle new posts with stored data
                     const postData = window.postData[postId];
+                    console.log("Opening post with stored data:", postId);
                     
-                    // Set content in the modal
-                    const modalHeader = modal.querySelector('.post-header');
-                    if (modalHeader) {
-                        modalHeader.querySelector('h2').textContent = postData.title;
-                        const postInfo = modalHeader.querySelector('.post-info');
-                        if (postInfo) {
-                            const infoSpans = postInfo.querySelectorAll('span');
-                            if (infoSpans.length >= 3) {
-                                infoSpans[0].innerHTML = `<i class="fas fa-user"></i> ${postData.author}`;
-                                infoSpans[1].innerHTML = `<i class="fas fa-calendar"></i> ${postData.date}`;
-                                infoSpans[2].innerHTML = `<i class="fas fa-eye"></i> ${postData.views}`;
-                            }
-                        }
-                    }
-                    
-                    // Set the post content
-                    const postContent = modal.querySelector('.post-content');
-                    if (postContent) {
-                        // Create a simple content display with paragraphs
-                        const contentHtml = postData.content.split('\n')
-                            .filter(para => para.trim() !== '')
-                            .map(para => `<p>${para}</p>`)
-                            .join('');
-                        
-                        // Keep any heading elements that might be in the modal template
-                        const headings = postContent.querySelectorAll('h3, h4');
-                        const headingsHtml = Array.from(headings).map(h => h.outerHTML).join('');
-                        
-                        // Update content, preserving any structured elements like file sections
-                        const fileSection = postContent.querySelector('.post-files');
-                        if (fileSection) {
-                            postContent.innerHTML = headingsHtml + contentHtml;
-                            postContent.appendChild(fileSection);
-                        } else {
-                            postContent.innerHTML = headingsHtml + contentHtml;
-                        }
-                    }
-                } 
-                // If this is an existing demo post without data-post-id, we'll just show the default content
+                    // Update modal content with the post data
+                    updateModalContent(modal, postData);
+                } else {
+                    console.log("Warning: No data found for post ID:", postId);
+                }
                 
                 modal.style.display = 'block';
                 document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
             }
         });
     });
+    
+    // Function to initialize existing posts data from static HTML
+    function initializeExistingPostsData() {
+        // Get all post links that don't have data-post-id attribute
+        const existingPostLinks = document.querySelectorAll('.open-modal:not([data-post-id])');
+        
+        existingPostLinks.forEach((link, index) => {
+            // Get post data from row
+            const row = link.closest('tr');
+            if (!row) return;
+            
+            // Generate a unique ID for this existing post (using row id if available or generate one)
+            const postId = row.id || `existing-post-${index}`;
+            row.id = postId; // Ensure row has an ID
+            
+            // Add data-post-id attribute to the link
+            link.setAttribute('data-post-id', postId);
+            
+            // Extract post data from the row
+            const title = link.textContent;
+            const categoryElem = row.querySelector('td:nth-child(2) span');
+            const categoryClass = categoryElem ? Array.from(categoryElem.classList).find(cls => cls !== 'category') : 'other';
+            const categoryText = categoryElem ? categoryElem.textContent : '기타';
+            const author = row.querySelector('td:nth-child(4)').textContent;
+            const date = row.querySelector('td:nth-child(5)').textContent;
+            let views = '0';
+            
+            // Views or answers (depending on board type)
+            if (row.querySelector('td:nth-child(6)')) {
+                views = row.querySelector('td:nth-child(6)').textContent;
+            }
+            
+            // Create unique content for each post
+            let content = '';
+            
+            // First, try to find a post-specific content in the modal
+            const modal = document.querySelector(link.getAttribute('href'));
+            
+            if (modal) {
+                // First, try to find post with matching title in the modal
+                const modalTitle = modal.querySelector('.post-header h2').textContent;
+                
+                if (modalTitle === title) {
+                    // Found matching title - use this content
+                    const contentElement = modal.querySelector('.post-content');
+                    if (contentElement) {
+                        // Clone to avoid modifying the original DOM
+                        const contentClone = contentElement.cloneNode(true);
+                        
+                        // Preserve file section separately
+                        const fileSection = contentClone.querySelector('.post-files');
+                        if (fileSection) {
+                            fileSection.remove(); // Remove from the clone to get clean content
+                        }
+                        
+                        // Get the HTML content
+                        content = contentClone.innerHTML;
+                        console.log(`Found matching title for ${title}, using its content`);
+                    }
+                } else {
+                    // Generate placeholder content based on post details
+                    content = `
+                        <h3>${title}</h3>
+                        <p>이 게시물은 <strong>${categoryText}</strong> 카테고리에 속하는 내용입니다.</p>
+                        <p>${author}님이 작성한 게시물로, ${date}에 게시되었습니다.</p>
+                        <p>게시물 상세 내용은 현재 준비 중입니다. 빠른 시일 내에 업데이트하겠습니다.</p>
+                    `;
+                    console.log(`Generated placeholder content for ${title}`);
+                }
+            }
+            
+            // Store post data
+            window.postData[postId] = {
+                title: title,
+                category: categoryText,
+                categoryClass: categoryClass,
+                author: author,
+                date: date,
+                content: content,
+                views: views
+            };
+            
+            console.log(`Initialized data for existing post: ${postId}`);
+        });
+    }
+    
+    // Helper function to update modal content with post data
+    function updateModalContent(modal, postData) {
+        // Set content in the modal header
+        const modalHeader = modal.querySelector('.post-header');
+        if (modalHeader) {
+            modalHeader.querySelector('h2').textContent = postData.title;
+            const postInfo = modalHeader.querySelector('.post-info');
+            if (postInfo) {
+                const infoSpans = postInfo.querySelectorAll('span');
+                if (infoSpans.length >= 3) {
+                    infoSpans[0].innerHTML = `<i class="fas fa-user"></i> ${postData.author}`;
+                    infoSpans[1].innerHTML = `<i class="fas fa-calendar"></i> ${postData.date}`;
+                    infoSpans[2].innerHTML = `<i class="fas fa-eye"></i> ${postData.views}`;
+                }
+            }
+        }
+        
+        // Set the post content
+        const postContent = modal.querySelector('.post-content');
+        if (postContent) {
+            // Create a simple content display with paragraphs
+            if (postData.content.includes('<') && postData.content.includes('>')) {
+                // Content already has HTML formatting
+                const contentHtml = postData.content;
+                
+                // Update content, preserving any structured elements like file sections
+                const fileSection = postContent.querySelector('.post-files');
+                if (fileSection) {
+                    // Save the file section content
+                    const fileSectionHtml = fileSection.outerHTML;
+                    
+                    // Replace the content but keep the file section
+                    postContent.innerHTML = contentHtml;
+                    postContent.insertAdjacentHTML('beforeend', fileSectionHtml);
+                } else {
+                    postContent.innerHTML = contentHtml;
+                }
+            } else {
+                // Simple text content, convert to paragraphs
+                const contentHtml = postData.content.split('\n')
+                    .filter(para => para.trim() !== '')
+                    .map(para => `<p>${para}</p>`)
+                    .join('');
+                
+                // Update content, preserving any structured elements like file sections
+                const fileSection = postContent.querySelector('.post-files');
+                if (fileSection) {
+                    // Save the file section content
+                    const fileSectionHtml = fileSection.outerHTML;
+                    
+                    // Replace the content but keep the file section
+                    postContent.innerHTML = contentHtml;
+                    postContent.insertAdjacentHTML('beforeend', fileSectionHtml);
+                } else {
+                    postContent.innerHTML = contentHtml;
+                }
+            }
+        }
+    }
     
     // Close modal
     modalClosers.forEach(closer => {
@@ -167,9 +287,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log("Displaying page", page);
         
         // Get fresh references to all rows
-        if (allRows.length === 0) {
-            allRows = Array.from(document.querySelectorAll('.board-list tbody tr'));
-        }
+        allRows = Array.from(document.querySelectorAll('.board-list tbody tr'));
         
         // Validate page number
         if (page < 1) page = 1;
@@ -454,17 +572,37 @@ document.addEventListener('DOMContentLoaded', function() {
         window.postData[newPostId] = {
             title: title,
             category: categoryText,
+            categoryClass: category,
             author: '현재 사용자',
             date: today,
             content: content,
             views: 0
         };
         
-        // Reinitialize event listeners for the new item
+        // Explicitly add click handler to the new modal trigger
         const newModalTrigger = newRow.querySelector('.open-modal');
         if (newModalTrigger) {
-            // Use the existing event listener through event delegation
-            // No need to add a new click handler as it's handled by the main modal trigger code
+            newModalTrigger.addEventListener('click', function(e) {
+                e.preventDefault();
+                const modalId = this.getAttribute('href');
+                const modal = document.querySelector(modalId);
+                const postId = this.getAttribute('data-post-id');
+                
+                if (modal && postId && window.postData && window.postData[postId]) {
+                    const postData = window.postData[postId];
+                    console.log("Opening new post with data:", postData);
+                    
+                    // Use the helper function to update modal content
+                    updateModalContent(modal, postData);
+                    
+                    modal.style.display = 'block';
+                    document.body.style.overflow = 'hidden';
+                } else if (modal) {
+                    // Fallback for any issues
+                    modal.style.display = 'block';
+                    document.body.style.overflow = 'hidden';
+                }
+            });
         }
         
         // Update pagination to show the first page with the new post
