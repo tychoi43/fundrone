@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FunDrone - FPV 및 교육용 드론 정보 포털</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- DaisyUI -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.19/dist/full.min.css" rel="stylesheet" type="text/css" />
     <!-- Custom Tailwind Configuration -->
     <script>
         tailwind.config = {
@@ -40,6 +42,23 @@
                         sans: ['Pretendard', 'Noto Sans KR', 'sans-serif'],
                     }
                 }
+            },
+            daisyui: {
+                themes: [
+                    {
+                        light: {
+                            "primary": "#0284c7",
+                            "secondary": "#475569",
+                            "accent": "#37CDBE",
+                            "neutral": "#1e293b",
+                            "base-100": "#FFFFFF",
+                            "info": "#3ABFF8",
+                            "success": "#36D399",
+                            "warning": "#FBBD23",
+                            "error": "#F87272",
+                        }
+                    }
+                ]
             }
         }
     </script>
@@ -67,51 +86,45 @@
         }
     </style>
 </head>
-<body class="bg-gray-50 font-sans text-secondary-900">
+<body class="bg-base-100 font-sans text-neutral">
     <!-- Header / Navigation -->
-    <header class="bg-white shadow-md sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-3">
-            <div class="flex justify-between items-center">
+    <header class="bg-base-100 shadow-md sticky top-0 z-50">
+        <div class="navbar container mx-auto px-4">
+            <div class="navbar-start">
                 <!-- Logo -->
-                <div class="flex items-center">
-                    <h1 class="text-2xl font-bold text-primary-600">
-                        <a href="index.html" class="flex items-center">
-                            <i class="fas fa-drone-alt mr-2"></i>
-                            FunDrone
-                        </a>
-                    </h1>
-                </div>
-                
-                <!-- Mobile Menu Button -->
-                <div class="md:hidden">
-                    <button id="menu-toggle" class="text-secondary-500 hover:text-primary-500 focus:outline-none">
-                        <i class="fas fa-bars text-xl"></i>
-                    </button>
-                </div>
-                
-                <!-- Desktop Navigation -->
-                <nav class="hidden md:block">
-                    <ul class="flex space-x-8">
-                        <li><a href="index.html" class="font-medium text-primary-600 hover:text-primary-800 transition">홈</a></li>
-                        <li><a href="pages/board/documents.html" class="font-medium text-secondary-600 hover:text-primary-600 transition">드론 문서 Q&A</a></li>
-                        <li><a href="pages/board/qna.html" class="font-medium text-secondary-600 hover:text-primary-600 transition">일반 Q&A</a></li>
-                        <li><a href="pages/gallery/photos.html" class="font-medium text-secondary-600 hover:text-primary-600 transition">드론 사진</a></li>
-                        <li><a href="pages/gallery/videos.html" class="font-medium text-secondary-600 hover:text-primary-600 transition">드론 영상</a></li>
-                        <li><a href="pages/promotion/about.html" class="font-medium text-secondary-600 hover:text-primary-600 transition">소개</a></li>
-                    </ul>
-                </nav>
+                <a href="index.html" class="btn btn-ghost text-xl text-primary">
+                    <i class="fas fa-drone-alt mr-2"></i>
+                    FunDrone
+                </a>
             </div>
             
-            <!-- Mobile Navigation Menu -->
-            <div id="mobile-menu" class="md:hidden hidden mt-3 pb-2">
-                <ul class="space-y-3">
-                    <li><a href="index.html" class="block font-medium text-primary-600 hover:text-primary-800 transition">홈</a></li>
-                    <li><a href="pages/board/documents.html" class="block font-medium text-secondary-600 hover:text-primary-600 transition">드론 문서 Q&A</a></li>
-                    <li><a href="pages/board/qna.html" class="block font-medium text-secondary-600 hover:text-primary-600 transition">일반 Q&A</a></li>
-                    <li><a href="pages/gallery/photos.html" class="block font-medium text-secondary-600 hover:text-primary-600 transition">드론 사진</a></li>
-                    <li><a href="pages/gallery/videos.html" class="block font-medium text-secondary-600 hover:text-primary-600 transition">드론 영상</a></li>
-                    <li><a href="pages/promotion/about.html" class="block font-medium text-secondary-600 hover:text-primary-600 transition">소개</a></li>
+            <!-- Desktop Navigation -->
+            <div class="navbar-center hidden lg:flex">
+                <ul class="menu menu-horizontal px-1">
+                    <li><a href="index.html" class="text-primary font-medium">홈</a></li>
+                    <li><a href="pages/board/documents.html" class="font-medium">드론 문서 Q&A</a></li>
+                    <li><a href="pages/board/qna.html" class="font-medium">일반 Q&A</a></li>
+                    <li><a href="pages/gallery/photos.html" class="font-medium">드론 사진</a></li>
+                    <li><a href="pages/gallery/videos.html" class="font-medium">드론 영상</a></li>
+                    <li><a href="pages/promotion/about.html" class="font-medium">소개</a></li>
                 </ul>
+            </div>
+            
+            <!-- Mobile Menu Toggle -->
+            <div class="navbar-end lg:hidden">
+                <div class="dropdown dropdown-end">
+                    <div tabindex="0" role="button" class="btn btn-ghost">
+                        <i class="fas fa-bars text-xl"></i>
+                    </div>
+                    <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                        <li><a href="index.html" class="text-primary font-medium">홈</a></li>
+                        <li><a href="pages/board/documents.html">드론 문서 Q&A</a></li>
+                        <li><a href="pages/board/qna.html">일반 Q&A</a></li>
+                        <li><a href="pages/gallery/photos.html">드론 사진</a></li>
+                        <li><a href="pages/gallery/videos.html">드론 영상</a></li>
+                        <li><a href="pages/promotion/about.html">소개</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </header>
@@ -127,10 +140,10 @@
                     드론 조립, 조종 방법 및 기본 원리에 대한 모든 정보를 찾아보세요
                 </p>
                 <div class="flex flex-wrap gap-4">
-                    <a href="#learn-more" class="px-8 py-3 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                    <a href="#learn-more" class="btn btn-primary btn-lg">
                         자세히 알아보기
                     </a>
-                    <a href="pages/board/qna.html" class="px-8 py-3 bg-white/10 hover:bg-white/20 text-white font-medium rounded-lg transition backdrop-blur-sm">
+                    <a href="pages/board/qna.html" class="btn btn-outline btn-lg text-white border-white hover:bg-white/20">
                         질문하기
                     </a>
                 </div>
@@ -139,30 +152,27 @@
     </section>
 
     <!-- Weather Info Section -->
-    <section class="py-12 bg-white">
+    <section class="py-12 bg-base-100">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-8 text-secondary-800">오늘의 날씨 정보</h2>
-            <div id="weather-data" class="max-w-3xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+            <h2 class="text-3xl font-bold text-center mb-8 text-neutral">오늘의 날씨 정보</h2>
+            <div id="weather-data" class="card max-w-3xl mx-auto bg-base-100 shadow-xl">
                 <div class="md:flex">
-                    <div class="md:flex-shrink-0 bg-primary-50 flex items-center justify-center p-6">
-                        <div class="text-6xl text-primary-500">
+                    <div class="md:flex-shrink-0 bg-primary/10 flex items-center justify-center p-6">
+                        <div class="text-6xl text-primary">
                             <i class="fas fa-cloud-sun"></i>
                         </div>
                     </div>
-                    <div class="p-8">
-                        <div class="mb-4">
-                            <h3 class="text-xl font-semibold text-secondary-800">현재 날씨</h3>
-                            <div class="mt-3 space-y-2">
-                                <p id="current-temp" class="text-lg text-secondary-700">로딩 중...</p>
-                                <p id="current-conditions" class="text-lg text-secondary-700">로딩 중...</p>
-                                <p id="wind-speed" class="text-lg text-secondary-700">풍속: 로딩 중...</p>
-                            </div>
+                    <div class="card-body">
+                        <h3 class="card-title text-xl font-semibold">현재 날씨</h3>
+                        <div class="space-y-2">
+                            <p id="current-temp" class="text-lg">로딩 중...</p>
+                            <p id="current-conditions" class="text-lg">로딩 중...</p>
+                            <p id="wind-speed" class="text-lg">풍속: 로딩 중...</p>
                         </div>
-                        <div class="border-t border-gray-200 pt-4">
-                            <p id="flight-recommendation" class="text-lg text-primary-600 font-medium">
-                                날씨 정보를 확인하는 중입니다...
-                            </p>
-                        </div>
+                        <div class="divider"></div>
+                        <p id="flight-recommendation" class="text-lg text-primary font-medium">
+                            날씨 정보를 확인하는 중입니다...
+                        </p>
                     </div>
                 </div>
             </div>
@@ -170,43 +180,47 @@
     </section>
 
     <!-- Drone Types Section -->
-    <section id="learn-more" class="py-16 bg-gray-50">
+    <section id="learn-more" class="py-16 bg-base-200">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-4 text-secondary-800">드론의 종류</h2>
-            <p class="text-xl text-center text-secondary-600 mb-12 max-w-3xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-4 text-neutral">드론의 종류</h2>
+            <p class="text-xl text-center text-neutral-content mb-12 max-w-3xl mx-auto">
                 다양한 목적과 기능을 가진 드론들을 만나보세요
             </p>
             
             <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
                 <!-- FPV Drone Card -->
-                <div class="drone-card bg-white rounded-xl overflow-hidden shadow-lg">
-                    <div class="h-64 overflow-hidden">
-                        <img src="images/fpv-drone.jpg" alt="FPV 드론" class="w-full h-full object-cover">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-2xl font-bold text-secondary-800 mb-3">FPV 드론</h3>
-                        <p class="text-secondary-600 mb-6">
+                <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all">
+                    <figure class="h-64">
+                        <img src="images/fpv-drone.jpg" alt="FPV 드론" class="w-full h-full object-cover" />
+                    </figure>
+                    <div class="card-body">
+                        <h3 class="card-title text-2xl font-bold">FPV 드론</h3>
+                        <p class="text-neutral-content mb-6">
                             1인칭 시점으로 비행을 즐기는 FPV 드론의 세계를 경험해보세요. 고속 비행과 역동적인 움직임이 특징입니다.
                         </p>
-                        <a href="pages/board/documents.html#fpv" class="inline-block px-6 py-2 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition">
-                            자세히 보기
-                        </a>
+                        <div class="card-actions justify-end">
+                            <a href="pages/board/documents.html#fpv" class="btn btn-primary">
+                                자세히 보기
+                            </a>
+                        </div>
                     </div>
                 </div>
                 
                 <!-- Educational Drone Card -->
-                <div class="drone-card bg-white rounded-xl overflow-hidden shadow-lg">
-                    <div class="h-64 overflow-hidden">
-                        <img src="images/education-drone.jpg" alt="교육용 드론" class="w-full h-full object-cover">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-2xl font-bold text-secondary-800 mb-3">교육용 드론</h3>
-                        <p class="text-secondary-600 mb-6">
+                <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all">
+                    <figure class="h-64">
+                        <img src="images/education-drone.jpg" alt="교육용 드론" class="w-full h-full object-cover" />
+                    </figure>
+                    <div class="card-body">
+                        <h3 class="card-title text-2xl font-bold">교육용 드론</h3>
+                        <p class="text-neutral-content mb-6">
                             코딩과 과학 원리를 배울 수 있는 교육용 드론. 초보자도 쉽게 시작할 수 있습니다.
                         </p>
-                        <a href="pages/board/documents.html#educational" class="inline-block px-6 py-2 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition">
-                            자세히 보기
-                        </a>
+                        <div class="card-actions justify-end">
+                            <a href="pages/board/documents.html#educational" class="btn btn-primary">
+                                자세히 보기
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -214,64 +228,72 @@
     </section>
 
     <!-- Featured Content Section -->
-    <section class="py-16 bg-white">
+    <section class="py-16 bg-base-100">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-12 text-secondary-800">추천 콘텐츠</h2>
+            <h2 class="text-3xl font-bold text-center mb-12 text-neutral">추천 콘텐츠</h2>
             
             <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Content Item 1 -->
-                <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
-                    <div class="h-48 overflow-hidden">
-                        <img src="images/assembly-guide.jpg" alt="드론 조립 가이드" class="w-full h-full object-cover">
-                    </div>
-                    <div class="p-5">
-                        <h3 class="font-bold text-lg text-secondary-800 mb-2">드론 조립 가이드</h3>
-                        <p class="text-secondary-600 text-sm mb-4">처음부터 드론을 조립하는 방법을 단계별로 알아봅니다.</p>
-                        <a href="pages/board/documents.html#assembly" class="inline-block text-primary-600 hover:text-primary-800 font-medium">
-                            읽어보기 <i class="fas fa-arrow-right ml-1"></i>
-                        </a>
+                <div class="card bg-base-100 shadow-md hover:shadow-lg transition">
+                    <figure class="h-48">
+                        <img src="images/assembly-guide.jpg" alt="드론 조립 가이드" class="w-full h-full object-cover" />
+                    </figure>
+                    <div class="card-body p-5">
+                        <h3 class="card-title text-lg">드론 조립 가이드</h3>
+                        <p class="text-neutral-content text-sm">처음부터 드론을 조립하는 방법을 단계별로 알아봅니다.</p>
+                        <div class="card-actions justify-end">
+                            <a href="pages/board/documents.html#assembly" class="link link-primary link-hover">
+                                읽어보기 <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
                 
                 <!-- Content Item 2 -->
-                <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
-                    <div class="h-48 overflow-hidden">
-                        <img src="images/flight-techniques.jpg" alt="비행 테크닉" class="w-full h-full object-cover">
-                    </div>
-                    <div class="p-5">
-                        <h3 class="font-bold text-lg text-secondary-800 mb-2">비행 테크닉</h3>
-                        <p class="text-secondary-600 text-sm mb-4">드론 조종 기술을 향상시키는 팁과 트릭을 배워보세요.</p>
-                        <a href="pages/board/documents.html#flight" class="inline-block text-primary-600 hover:text-primary-800 font-medium">
-                            읽어보기 <i class="fas fa-arrow-right ml-1"></i>
-                        </a>
+                <div class="card bg-base-100 shadow-md hover:shadow-lg transition">
+                    <figure class="h-48">
+                        <img src="images/flight-techniques.jpg" alt="비행 테크닉" class="w-full h-full object-cover" />
+                    </figure>
+                    <div class="card-body p-5">
+                        <h3 class="card-title text-lg">비행 테크닉</h3>
+                        <p class="text-neutral-content text-sm">드론 조종 기술을 향상시키는 팁과 트릭을 배워보세요.</p>
+                        <div class="card-actions justify-end">
+                            <a href="pages/board/documents.html#flight" class="link link-primary link-hover">
+                                읽어보기 <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
                 
                 <!-- Content Item 3 -->
-                <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
-                    <div class="h-48 overflow-hidden">
-                        <img src="images/drone-footage.jpg" alt="최신 드론 영상" class="w-full h-full object-cover">
-                    </div>
-                    <div class="p-5">
-                        <h3 class="font-bold text-lg text-secondary-800 mb-2">최신 드론 영상</h3>
-                        <p class="text-secondary-600 text-sm mb-4">커뮤니티에서 공유된 멋진 드론 영상을 감상하세요.</p>
-                        <a href="pages/gallery/videos.html" class="inline-block text-primary-600 hover:text-primary-800 font-medium">
-                            보러가기 <i class="fas fa-arrow-right ml-1"></i>
-                        </a>
+                <div class="card bg-base-100 shadow-md hover:shadow-lg transition">
+                    <figure class="h-48">
+                        <img src="images/drone-footage.jpg" alt="최신 드론 영상" class="w-full h-full object-cover" />
+                    </figure>
+                    <div class="card-body p-5">
+                        <h3 class="card-title text-lg">최신 드론 영상</h3>
+                        <p class="text-neutral-content text-sm">커뮤니티에서 공유된 멋진 드론 영상을 감상하세요.</p>
+                        <div class="card-actions justify-end">
+                            <a href="pages/gallery/videos.html" class="link link-primary link-hover">
+                                보러가기 <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
                 
                 <!-- Content Item 4 -->
-                <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
-                    <div class="h-48 overflow-hidden">
-                        <img src="images/drone-photos.jpg" alt="드론 사진 갤러리" class="w-full h-full object-cover">
-                    </div>
-                    <div class="p-5">
-                        <h3 class="font-bold text-lg text-secondary-800 mb-2">드론 사진 갤러리</h3>
-                        <p class="text-secondary-600 text-sm mb-4">아름다운 드론 사진들을 감상하고 여러분의 작품도 공유해보세요.</p>
-                        <a href="pages/gallery/photos.html" class="inline-block text-primary-600 hover:text-primary-800 font-medium">
-                            보러가기 <i class="fas fa-arrow-right ml-1"></i>
-                        </a>
+                <div class="card bg-base-100 shadow-md hover:shadow-lg transition">
+                    <figure class="h-48">
+                        <img src="images/drone-photos.jpg" alt="드론 사진 갤러리" class="w-full h-full object-cover" />
+                    </figure>
+                    <div class="card-body p-5">
+                        <h3 class="card-title text-lg">드론 사진 갤러리</h3>
+                        <p class="text-neutral-content text-sm">아름다운 드론 사진들을 감상하고 여러분의 작품도 공유해보세요.</p>
+                        <div class="card-actions justify-end">
+                            <a href="pages/gallery/photos.html" class="link link-primary link-hover">
+                                보러가기 <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -279,131 +301,125 @@
     </section>
     
     <!-- Drone Technologies Section -->
-    <section class="py-16 bg-gray-50">
+    <section class="py-16 bg-base-200">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-4 text-secondary-800">드론 핵심 기술</h2>
-            <p class="text-xl text-center text-secondary-600 mb-12 max-w-3xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-4 text-neutral">드론 핵심 기술</h2>
+            <p class="text-xl text-center text-neutral-content mb-12 max-w-3xl mx-auto">
                 현대 드론을 가능하게 하는 혁신적인 기술들을 알아보세요
             </p>
             
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- GPS Technology -->
-                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition group">
-                    <div class="h-36 bg-gradient-to-r from-blue-500 to-blue-700 flex items-center justify-center relative overflow-hidden">
-                        <div class="absolute inset-0 bg-blue-600 opacity-0 group-hover:opacity-20 transition-opacity"></div>
-                        <i class="fas fa-satellite text-white text-5xl group-hover:scale-110 transition-transform"></i>
-                    </div>
-                    <div class="p-6">
+                <div class="card bg-base-100 shadow-lg hover:shadow-xl transition">
+                    <figure class="bg-gradient-to-r from-blue-500 to-blue-700 h-36 flex items-center justify-center">
+                        <i class="fas fa-satellite text-white text-5xl"></i>
+                    </figure>
+                    <div class="card-body">
                         <div class="flex items-center justify-between mb-3">
-                            <h3 class="text-xl font-bold text-secondary-800">GPS 내비게이션</h3>
-                            <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">위치 기술</span>
+                            <h3 class="card-title">GPS 내비게이션</h3>
+                            <div class="badge badge-primary">위치 기술</div>
                         </div>
-                        <p class="text-secondary-600 mb-4">정확한 위치 추적과 자율 비행을 가능하게 하는 기술로, 경로 계획 및 복귀 비행에 필수적입니다.</p>
+                        <p class="text-neutral-content mb-4">정확한 위치 추적과 자율 비행을 가능하게 하는 기술로, 경로 계획 및 복귀 비행에 필수적입니다.</p>
                         <div class="flex justify-between items-center">
-                            <span class="text-xs text-secondary-500">정확도: ~2.5m</span>
-                            <span class="text-primary-600 font-medium text-sm">상용화 단계</span>
+                            <div class="badge badge-outline">정확도: ~2.5m</div>
+                            <span class="text-primary font-medium text-sm">상용화 단계</span>
                         </div>
                     </div>
                 </div>
                 
                 <!-- Vision Sensors -->
-                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition group">
-                    <div class="h-36 bg-gradient-to-r from-purple-500 to-purple-700 flex items-center justify-center relative overflow-hidden">
-                        <div class="absolute inset-0 bg-purple-600 opacity-0 group-hover:opacity-20 transition-opacity"></div>
-                        <i class="fas fa-eye text-white text-5xl group-hover:scale-110 transition-transform"></i>
-                    </div>
-                    <div class="p-6">
+                <div class="card bg-base-100 shadow-lg hover:shadow-xl transition">
+                    <figure class="bg-gradient-to-r from-purple-500 to-purple-700 h-36 flex items-center justify-center">
+                        <i class="fas fa-eye text-white text-5xl"></i>
+                    </figure>
+                    <div class="card-body">
                         <div class="flex items-center justify-between mb-3">
-                            <h3 class="text-xl font-bold text-secondary-800">비전 센서</h3>
-                            <span class="bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">인식 기술</span>
+                            <h3 class="card-title">비전 센서</h3>
+                            <div class="badge badge-secondary">인식 기술</div>
                         </div>
-                        <p class="text-secondary-600 mb-4">카메라와 적외선 센서를 통해 장애물을 감지하고 회피하는 기술로, 안전한 비행을 가능하게 합니다.</p>
+                        <p class="text-neutral-content mb-4">카메라와 적외선 센서를 통해 장애물을 감지하고 회피하는 기술로, 안전한 비행을 가능하게 합니다.</p>
                         <div class="flex justify-between items-center">
-                            <span class="text-xs text-secondary-500">감지 범위: ~20m</span>
-                            <span class="text-primary-600 font-medium text-sm">상용화 단계</span>
+                            <div class="badge badge-outline">감지 범위: ~20m</div>
+                            <span class="text-primary font-medium text-sm">상용화 단계</span>
                         </div>
                     </div>
                 </div>
                 
                 <!-- AI Video Analysis -->
-                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition group">
-                    <div class="h-36 bg-gradient-to-r from-green-500 to-green-700 flex items-center justify-center relative overflow-hidden">
-                        <div class="absolute inset-0 bg-green-600 opacity-0 group-hover:opacity-20 transition-opacity"></div>
-                        <i class="fas fa-brain text-white text-5xl group-hover:scale-110 transition-transform"></i>
-                    </div>
-                    <div class="p-6">
+                <div class="card bg-base-100 shadow-lg hover:shadow-xl transition">
+                    <figure class="bg-gradient-to-r from-green-500 to-green-700 h-36 flex items-center justify-center">
+                        <i class="fas fa-brain text-white text-5xl"></i>
+                    </figure>
+                    <div class="card-body">
                         <div class="flex items-center justify-between mb-3">
-                            <h3 class="text-xl font-bold text-secondary-800">AI 영상 분석</h3>
-                            <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">인공지능</span>
+                            <h3 class="card-title">AI 영상 분석</h3>
+                            <div class="badge badge-accent">인공지능</div>
                         </div>
-                        <p class="text-secondary-600 mb-4">실시간으로 영상을 분석하여 물체를 인식하고 추적하는 기술로, 자동 촬영과 감시에 활용됩니다.</p>
+                        <p class="text-neutral-content mb-4">실시간으로 영상을 분석하여 물체를 인식하고 추적하는 기술로, 자동 촬영과 감시에 활용됩니다.</p>
                         <div class="flex justify-between items-center">
-                            <span class="text-xs text-secondary-500">인식 정확도: ~95%</span>
-                            <span class="text-primary-600 font-medium text-sm">상용화 단계</span>
+                            <div class="badge badge-outline">인식 정확도: ~95%</div>
+                            <span class="text-primary font-medium text-sm">상용화 단계</span>
                         </div>
                     </div>
                 </div>
                 
                 <!-- 5G Communication -->
-                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition group">
-                    <div class="h-36 bg-gradient-to-r from-red-500 to-red-700 flex items-center justify-center relative overflow-hidden">
-                        <div class="absolute inset-0 bg-red-600 opacity-0 group-hover:opacity-20 transition-opacity"></div>
-                        <i class="fas fa-broadcast-tower text-white text-5xl group-hover:scale-110 transition-transform"></i>
-                    </div>
-                    <div class="p-6">
+                <div class="card bg-base-100 shadow-lg hover:shadow-xl transition">
+                    <figure class="bg-gradient-to-r from-red-500 to-red-700 h-36 flex items-center justify-center">
+                        <i class="fas fa-broadcast-tower text-white text-5xl"></i>
+                    </figure>
+                    <div class="card-body">
                         <div class="flex items-center justify-between mb-3">
-                            <h3 class="text-xl font-bold text-secondary-800">5G 통신</h3>
-                            <span class="bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">통신 기술</span>
+                            <h3 class="card-title">5G 통신</h3>
+                            <div class="badge badge-error">통신 기술</div>
                         </div>
-                        <p class="text-secondary-600 mb-4">초고속, 저지연 통신으로 실시간 4K/8K 영상 전송과 원격 제어를 가능하게 하는 차세대 통신 기술입니다.</p>
+                        <p class="text-neutral-content mb-4">초고속, 저지연 통신으로 실시간 4K/8K 영상 전송과 원격 제어를 가능하게 하는 차세대 통신 기술입니다.</p>
                         <div class="flex justify-between items-center">
-                            <span class="text-xs text-secondary-500">지연시간: ~1ms</span>
-                            <span class="text-primary-600 font-medium text-sm">도입 단계</span>
+                            <div class="badge badge-outline">지연시간: ~1ms</div>
+                            <span class="text-primary font-medium text-sm">도입 단계</span>
                         </div>
                     </div>
                 </div>
                 
                 <!-- LiDAR Technology -->
-                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition group">
-                    <div class="h-36 bg-gradient-to-r from-amber-500 to-amber-700 flex items-center justify-center relative overflow-hidden">
-                        <div class="absolute inset-0 bg-amber-600 opacity-0 group-hover:opacity-20 transition-opacity"></div>
-                        <i class="fas fa-radar text-white text-5xl group-hover:scale-110 transition-transform"></i>
-                    </div>
-                    <div class="p-6">
+                <div class="card bg-base-100 shadow-lg hover:shadow-xl transition">
+                    <figure class="bg-gradient-to-r from-amber-500 to-amber-700 h-36 flex items-center justify-center">
+                        <i class="fas fa-radar text-white text-5xl"></i>
+                    </figure>
+                    <div class="card-body">
                         <div class="flex items-center justify-between mb-3">
-                            <h3 class="text-xl font-bold text-secondary-800">LiDAR 센서</h3>
-                            <span class="bg-amber-100 text-amber-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">매핑 기술</span>
+                            <h3 class="card-title">LiDAR 센서</h3>
+                            <div class="badge badge-warning">매핑 기술</div>
                         </div>
-                        <p class="text-secondary-600 mb-4">레이저 펄스를 이용해 환경의 3D 맵을 생성하는 기술로, 정밀한 지형 매핑과 측량에 활용됩니다.</p>
+                        <p class="text-neutral-content mb-4">레이저 펄스를 이용해 환경의 3D 맵을 생성하는 기술로, 정밀한 지형 매핑과 측량에 활용됩니다.</p>
                         <div class="flex justify-between items-center">
-                            <span class="text-xs text-secondary-500">정확도: ~5cm</span>
-                            <span class="text-primary-600 font-medium text-sm">상용화 단계</span>
+                            <div class="badge badge-outline">정확도: ~5cm</div>
+                            <span class="text-primary font-medium text-sm">상용화 단계</span>
                         </div>
                     </div>
                 </div>
                 
                 <!-- Battery Technology -->
-                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition group">
-                    <div class="h-36 bg-gradient-to-r from-teal-500 to-teal-700 flex items-center justify-center relative overflow-hidden">
-                        <div class="absolute inset-0 bg-teal-600 opacity-0 group-hover:opacity-20 transition-opacity"></div>
-                        <i class="fas fa-battery-full text-white text-5xl group-hover:scale-110 transition-transform"></i>
-                    </div>
-                    <div class="p-6">
+                <div class="card bg-base-100 shadow-lg hover:shadow-xl transition">
+                    <figure class="bg-gradient-to-r from-teal-500 to-teal-700 h-36 flex items-center justify-center">
+                        <i class="fas fa-battery-full text-white text-5xl"></i>
+                    </figure>
+                    <div class="card-body">
                         <div class="flex items-center justify-between mb-3">
-                            <h3 class="text-xl font-bold text-secondary-800">고성능 배터리</h3>
-                            <span class="bg-teal-100 text-teal-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">전력 기술</span>
+                            <h3 class="card-title">고성능 배터리</h3>
+                            <div class="badge badge-success">전력 기술</div>
                         </div>
-                        <p class="text-secondary-600 mb-4">고밀도 리튬 폴리머 배터리로 드론의 비행 시간을 연장하고 더 높은 출력을 가능하게 합니다.</p>
+                        <p class="text-neutral-content mb-4">고밀도 리튬 폴리머 배터리로 드론의 비행 시간을 연장하고 더 높은 출력을 가능하게 합니다.</p>
                         <div class="flex justify-between items-center">
-                            <span class="text-xs text-secondary-500">비행시간: ~30분</span>
-                            <span class="text-primary-600 font-medium text-sm">계속 발전 중</span>
+                            <div class="badge badge-outline">비행시간: ~30분</div>
+                            <span class="text-primary font-medium text-sm">계속 발전 중</span>
                         </div>
                     </div>
                 </div>
             </div>
             
             <div class="mt-12 text-center">
-                <a href="pages/board/documents.html" class="inline-flex items-center px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition shadow-md hover:shadow-lg">
+                <a href="pages/board/documents.html" class="btn btn-primary btn-wide">
                     <span>더 많은 드론 기술 알아보기</span>
                     <i class="fas fa-arrow-right ml-2"></i>
                 </a>
@@ -412,17 +428,17 @@
     </section>
     
     <!-- CTA Section -->
-    <section class="bg-primary-700 py-16">
+    <section class="bg-primary py-16 text-white">
         <div class="container mx-auto px-4 text-center">
-            <h2 class="text-3xl font-bold text-white mb-6">드론의 세계를 함께 탐험해보세요</h2>
-            <p class="text-xl text-primary-100 mb-8 max-w-3xl mx-auto">
+            <h2 class="text-3xl font-bold mb-6">드론의 세계를 함께 탐험해보세요</h2>
+            <p class="text-xl text-primary-content mb-8 max-w-3xl mx-auto">
                 초보자부터 전문가까지, 모든 드론 애호가들이 함께하는 FunDrone 커뮤니티에 참여하세요.
             </p>
             <div class="flex flex-wrap justify-center gap-4">
-                <a href="pages/board/qna.html" class="px-8 py-3 bg-white text-primary-700 font-medium rounded-lg transition shadow-lg hover:bg-gray-100">
+                <a href="pages/board/qna.html" class="btn btn-lg">
                     질문하기
                 </a>
-                <a href="pages/promotion/about.html" class="px-8 py-3 bg-primary-600 text-white font-medium rounded-lg transition shadow-lg hover:bg-primary-500">
+                <a href="pages/promotion/about.html" class="btn btn-outline btn-lg text-white border-white hover:bg-white/20">
                     자세히 알아보기
                 </a>
             </div>
@@ -430,64 +446,45 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-secondary-900 text-white py-12">
-        <div class="container mx-auto px-4">
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- About Section -->
-                <div>
-                    <h3 class="text-xl font-bold mb-4">FunDrone</h3>
-                    <p class="text-gray-300 mb-4">FPV 및 교육용 드론에 관한 모든 정보를 제공합니다.</p>
-                </div>
-                
-                <!-- Quick Links -->
-                <div>
-                    <h3 class="text-xl font-bold mb-4">링크</h3>
-                    <ul class="space-y-2">
-                        <li><a href="index.html" class="text-gray-300 hover:text-white transition">홈</a></li>
-                        <li><a href="pages/board/documents.html" class="text-gray-300 hover:text-white transition">드론 문서 Q&A</a></li>
-                        <li><a href="pages/board/qna.html" class="text-gray-300 hover:text-white transition">일반 Q&A</a></li>
-                        <li><a href="pages/gallery/photos.html" class="text-gray-300 hover:text-white transition">드론 사진</a></li>
-                        <li><a href="pages/gallery/videos.html" class="text-gray-300 hover:text-white transition">드론 영상</a></li>
-                        <li><a href="pages/promotion/about.html" class="text-gray-300 hover:text-white transition">소개</a></li>
-                    </ul>
-                </div>
-                
-                <!-- Social Media -->
-                <div>
-                    <h3 class="text-xl font-bold mb-4">소셜 미디어</h3>
-                    <div class="flex space-x-4">
-                        <a href="#" class="text-gray-300 hover:text-white transition text-2xl">
-                            <i class="fab fa-facebook"></i>
-                        </a>
-                        <a href="#" class="text-gray-300 hover:text-white transition text-2xl">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="text-gray-300 hover:text-white transition text-2xl">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" class="text-gray-300 hover:text-white transition text-2xl">
-                            <i class="fab fa-youtube"></i>
-                        </a>
-                    </div>
-                    <p class="mt-4 text-gray-300">최신 드론 소식과 팁을 받아보세요.</p>
-                </div>
+    <footer class="footer footer-center p-10 bg-neutral text-white">
+        <aside>
+            <h3 class="text-xl font-bold mb-2">FunDrone</h3>
+            <p class="text-neutral-content">FPV 및 교육용 드론에 관한 모든 정보를 제공합니다.</p>
+        </aside> 
+        <nav>
+            <div class="grid grid-flow-col gap-4">
+                <a href="#" class="btn btn-circle btn-ghost text-xl">
+                    <i class="fab fa-facebook"></i>
+                </a>
+                <a href="#" class="btn btn-circle btn-ghost text-xl">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="btn btn-circle btn-ghost text-xl">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" class="btn btn-circle btn-ghost text-xl">
+                    <i class="fab fa-youtube"></i>
+                </a>
             </div>
-            
-            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
-                <p class="text-gray-400">&copy; 2023 FunDrone. All rights reserved.</p>
+        </nav>
+        <nav>
+            <div class="grid grid-flow-col gap-4">
+                <a href="index.html" class="link link-hover">홈</a>
+                <a href="pages/board/documents.html" class="link link-hover">드론 문서 Q&A</a>
+                <a href="pages/board/qna.html" class="link link-hover">일반 Q&A</a>
+                <a href="pages/gallery/photos.html" class="link link-hover">드론 사진</a>
+                <a href="pages/gallery/videos.html" class="link link-hover">드론 영상</a>
+                <a href="pages/promotion/about.html" class="link link-hover">소개</a>
             </div>
+        </nav>
+        <div>
+            <p class="text-neutral-content">&copy; 2023 FunDrone. All rights reserved.</p>
         </div>
     </footer>
 
     <!-- JavaScript -->
     <script src="js/weather.js"></script>
     <script>
-        // Mobile menu toggle
-        document.getElementById('menu-toggle').addEventListener('click', function() {
-            const mobileMenu = document.getElementById('mobile-menu');
-            mobileMenu.classList.toggle('hidden');
-        });
-        
         // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -501,12 +498,6 @@
                     targetElement.scrollIntoView({
                         behavior: 'smooth'
                     });
-                    
-                    // Close mobile menu if open
-                    const mobileMenu = document.getElementById('mobile-menu');
-                    if (!mobileMenu.classList.contains('hidden')) {
-                        mobileMenu.classList.add('hidden');
-                    }
                 }
             });
         });
