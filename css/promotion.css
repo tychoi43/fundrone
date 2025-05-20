@@ -81,25 +81,27 @@
 }
 
 .mission-card {
-    background-color: white;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 8px 32px rgba(108,99,255,0.10);
+    border: 1.5px solid #e9eafc;
+    transition: var(--transition);
     padding: 40px 30px;
-    border-radius: 10px;
-    box-shadow: var(--box-shadow);
     flex: 1;
     max-width: 350px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .mission-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 16px 48px rgba(76,97,255,0.16);
+    transform: translateY(-6px) scale(1.02);
 }
 
 .mission-icon {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(255,97,166,0.10);
     width: 80px;
     height: 80px;
-    background-color: var(--primary-color);
-    color: white;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -140,19 +142,23 @@
 
 .service-item {
     display: flex;
-    background-color: #f8f9fa;
-    border-radius: 10px;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 8px 32px rgba(108,99,255,0.10);
+    border: 1.5px solid #e9eafc;
+    transition: var(--transition);
     padding: 30px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .service-item:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--box-shadow);
+    box-shadow: 0 16px 48px rgba(76,97,255,0.16);
+    transform: translateY(-6px) scale(1.02);
 }
 
 .service-icon {
-    color: var(--primary-color);
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(255,97,166,0.10);
     font-size: 2.5rem;
     margin-right: 20px;
     flex-shrink: 0;
@@ -192,15 +198,17 @@
 }
 
 .team-member {
-    background-color: white;
-    border-radius: 10px;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 8px 32px rgba(108,99,255,0.10);
+    border: 1.5px solid #e9eafc;
+    transition: var(--transition);
     overflow: hidden;
-    box-shadow: var(--box-shadow);
-    transition: transform 0.3s ease;
 }
 
 .team-member:hover {
-    transform: translateY(-10px);
+    box-shadow: 0 16px 48px rgba(76,97,255,0.16);
+    transform: translateY(-6px) scale(1.02);
 }
 
 .member-photo {
@@ -338,10 +346,17 @@
 
 .contact-form {
     flex: 1;
-    background-color: #f8f9fa;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 8px 32px rgba(108,99,255,0.10);
+    border: 1.5px solid #e9eafc;
+    transition: var(--transition);
     padding: 40px;
-    border-radius: 10px;
-    box-shadow: var(--box-shadow);
+}
+
+.contact-form:hover {
+    box-shadow: 0 16px 48px rgba(76,97,255,0.16);
+    transform: translateY(-6px) scale(1.02);
 }
 
 .contact-form h3 {

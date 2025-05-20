@@ -72,11 +72,12 @@
 
 /* Board List */
 .board-list {
-    background: #f8f9fa;
-    border-radius: 10px;
-    box-shadow: var(--box-shadow);
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 8px 32px rgba(108,99,255,0.10);
     overflow: hidden;
     margin-bottom: 30px;
+    border: 1.5px solid #e9eafc;
 }
 
 .board-list table {
@@ -91,9 +92,10 @@
 }
 
 .board-list th {
-    background-color: #e9ecef;
-    font-weight: 600;
-    color: var(--dark-color);
+    background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: #fff;
+    font-weight: 700;
+    border: none;
 }
 
 .board-list td:nth-child(3) {
@@ -101,7 +103,8 @@
 }
 
 .board-list tr:hover {
-    background-color: #e9ecef;
+    background: #f4f6fb;
+    transition: var(--transition);
 }
 
 .board-list a {
@@ -115,28 +118,28 @@
 }
 
 .category {
-    display: inline-block;
-    padding: 5px 10px;
-    border-radius: 15px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: white;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 6px 16px;
+    letter-spacing: 0.02em;
+    box-shadow: 0 2px 8px rgba(76,97,255,0.08);
 }
 
 .category.fpv {
-    background-color: #3498db;
+    background: linear-gradient(90deg, #6C63FF 0%, #48C6EF 100%);
 }
 
 .category.educational {
-    background-color: #2ecc71;
+    background: linear-gradient(90deg, #48C6EF 0%, #6C63FF 100%);
 }
 
 .category.assembly {
-    background-color: #f39c12;
+    background: linear-gradient(90deg, #FFD166 0%, #FF61A6 100%);
 }
 
 .category.flight {
-    background-color: #9b59b6;
+    background: linear-gradient(90deg, #FF61A6 0%, #6C63FF 100%);
 }
 
 /* Pagination */
@@ -148,27 +151,23 @@
 }
 
 .board-pagination a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: #f8f9fa;
-    color: #343a40;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    border: 1px solid #adb5bd;
+    background: #fff;
+    color: var(--primary-color);
+    border: 1.5px solid #e9eafc;
+    font-weight: 600;
+    transition: var(--transition);
 }
 
 .board-pagination a.active {
-    background-color: var(--primary-color);
-    color: white;
-    border-color: var(--primary-color);
+    background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: #fff;
+    border: none;
+    box-shadow: 0 2px 8px rgba(108,99,255,0.10);
 }
 
 .board-pagination a:hover:not(.active) {
-    background-color: #f5f5f5;
+    background: #f4f6fb;
+    color: var(--accent-color);
 }
 
 .board-pagination a.next {
@@ -322,11 +321,12 @@
 }
 
 .modal-content {
-    background-color: white;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 8px 32px rgba(76,97,255,0.10);
+    border: 1.5px solid #e9eafc;
     margin: 5% auto;
     padding: 30px;
-    border-radius: 10px;
-    box-shadow: var(--box-shadow);
     width: 80%;
     max-width: 800px;
     position: relative;
