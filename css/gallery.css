@@ -2,7 +2,7 @@
 
 .gallery-content {
     padding: 50px 0;
-    background-color: #f8f9fa;
+    background-color: #f1f3f5;
 }
 
 /* Gallery Filter */
@@ -46,7 +46,7 @@
 }
 
 .gallery-item {
-    background: white;
+    background: #f8f9fa;
     border-radius: 10px;
     box-shadow: var(--box-shadow);
     overflow: hidden;
@@ -132,6 +132,18 @@
 .gallery-buttons {
     display: flex;
     justify-content: flex-end;
+}
+
+.gallery-pagination a {
+    background-color: #f8f9fa;
+    color: #343a40;
+    border: 1px solid #adb5bd;
+}
+
+.gallery-pagination a.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
 }
 
 /* Photo Modal Styles */

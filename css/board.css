@@ -1,6 +1,6 @@
 /* Board Page Styles */
 .page-header {
-    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../images/board-header-bg.jpg');
+    background: linear-gradient(rgba(52, 58, 64, 0.7), rgba(52, 58, 64, 0.7)), url('../images/gray-documents.jpg');
     background-size: cover;
     background-position: center;
     color: white;
@@ -21,7 +21,7 @@
 
 .board-content {
     padding: 50px 0;
-    background-color: #f8f9fa;
+    background-color: #f1f3f5;
 }
 
 /* Filter and Search */
@@ -72,7 +72,7 @@
 
 /* Board List */
 .board-list {
-    background: white;
+    background: #f8f9fa;
     border-radius: 10px;
     box-shadow: var(--box-shadow);
     overflow: hidden;
@@ -91,7 +91,7 @@
 }
 
 .board-list th {
-    background-color: #f8f9fa;
+    background-color: #e9ecef;
     font-weight: 600;
     color: var(--dark-color);
 }
@@ -101,7 +101,7 @@
 }
 
 .board-list tr:hover {
-    background-color: #f8f9fa;
+    background-color: #e9ecef;
 }
 
 .board-list a {
@@ -154,11 +154,11 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-color: white;
-    color: #333;
+    background-color: #f8f9fa;
+    color: #343a40;
     text-decoration: none;
     transition: all 0.3s ease;
-    border: 1px solid #ddd;
+    border: 1px solid #adb5bd;
 }
 
 .board-pagination a.active {
