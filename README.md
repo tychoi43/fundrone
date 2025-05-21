@@ -59,3 +59,21 @@ fundrone/
 ## 라이센스
 
 이 프로젝트는 MIT 라이센스를 따릅니다.
+
+## Node.js 파일 업로드 서버 실행 방법
+
+1. 의존성 설치
+
+```bash
+npm install express multer cors
+```
+
+2. 서버 실행
+
+```bash
+node server.js
+```
+
+3. 업로드 파일은 `/uploads` 폴더에 저장됩니다.
+
+---
