@@ -659,49 +659,63 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (uploadForms.length > 0) {
         uploadForms.forEach(form => {
-            form.addEventListener('submit', function(e) {
+            form.addEventListener('submit', async function(e) {
                 e.preventDefault();
-                
-                // In a real application, you would handle the form submission here
-                // For this demonstration, we'll just show a success message
-                
+
                 const formData = new FormData(this);
-                
-                // Log all form data for debugging
-                console.log('Form submitted with:');
-                for (let pair of formData.entries()) {
-                    console.log(pair[0], pair[1]);
+                // 파일 input 이름 추출
+                const fileInput = this.querySelector('input[type="file"]');
+                let uploadedFiles = [];
+
+                // 파일 첨부 시 서버로 업로드
+                if (fileInput && fileInput.files && fileInput.files.length > 0) {
+                    const uploadData = new FormData();
+                    for (let i = 0; i < fileInput.files.length; i++) {
+                        uploadData.append('files', fileInput.files[i]);
+                    }
+                    try {
+                        const res = await fetch('/api/upload', {
+                            method: 'POST',
+                            body: uploadData
+                        });
+                        const result = await res.json();
+                        if (result.success) {
+                            uploadedFiles = result.files;
+                        }
+                    } catch (err) {
+                        alert('파일 업로드에 실패했습니다.');
+                        return;
+                    }
                 }
-                
-                // Get form type
+
+                // 기존 폼 데이터에서 파일 필드는 제거 (이미 업로드됨)
+                formData.delete('file');
+                formData.delete('question-file');
+                formData.delete('edit-file');
+
+                // 업로드된 파일 정보를 게시물 데이터에 추가
+                formData.append('uploadedFiles', JSON.stringify(uploadedFiles));
+
+                // 이하 기존 로직(성공 메시지, 모달 닫기 등) 유지
                 let successMessage = '문서가 성공적으로 업로드되었습니다!';
                 if (form.closest('#question-modal')) {
                     successMessage = '질문이 성공적으로 등록되었습니다!';
                 }
-                
-                // Create a success message
                 const successElement = document.createElement('div');
                 successElement.className = 'success-message';
                 successElement.innerHTML = `
                     <i class="fas fa-check-circle"></i>
                     <p>${successMessage}</p>
                 `;
-                
-                // Replace form with success message
                 this.innerHTML = '';
                 this.appendChild(successElement);
-                
-                // Close the modal after a delay
                 setTimeout(() => {
                     const modal = this.closest('.modal');
                     if (modal) {
                         modal.style.display = 'none';
                         document.body.style.overflow = '';
-                        
-                        // Add new item to the board
+                        // 게시판에 새 항목 추가 (업로드 파일 정보 포함)
                         addNewItemToBoard(formData);
-                        
-                        // Reset the form for next use
                         setTimeout(() => {
                             this.reset();
                             const filePreview = this.querySelector('.file-preview');
@@ -775,6 +789,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     url: '#', // In a real app, this would be the file's URL after upload
                 });
             }
+        }
+        
+        // 업로드된 파일 정보 파싱
+        let uploadedFiles = [];
+        if (formData.get('uploadedFiles')) {
+            try {
+                uploadedFiles = JSON.parse(formData.get('uploadedFiles'));
+            } catch (e) {}
         }
         
         window.postData[newPostId] = {
@@ -1229,5 +1251,18 @@ document.addEventListener('DOMContentLoaded', function() {
             // Reset current post ID
             currentPostId = null;
         });
+    }
+
+    // 예시: 게시물 상세 모달에 첨부파일 표시
+    function renderPostModal(postId) {
+        const post = window.postData[postId];
+        let filesHtml = '';
+        if (post.uploadedFiles && post.uploadedFiles.length > 0) {
+            filesHtml = '<div class="post-files"><h4>첨부 파일</h4><ul>' +
+                post.uploadedFiles.map(f => `<li><a href="${f.url}" download target="_blank"><i class="fas fa-file"></i> ${f.originalname}</a></li>`).join('') +
+                '</ul></div>';
+        }
+        // ... post-content 아래에 filesHtml 삽입 ...
+        // ... existing code ...
     }
 }); 
